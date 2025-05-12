@@ -1,0 +1,415 @@
+import { supabase } from '../lib/supabase'
+import { cache } from '../lib/cache'
+import type { Message } from '../lib/database'
+import { fetchMessages } from '@/lib/api-client'
+
+// Definición de UIMessage para el uso interno en este archivo
+interface UIMessage {
+  id: string;
+  conversationId: string;
+  content: string;
+  timestamp: string;
+  sender: 'me' | 'them';
+  status: string;
+  type: string;
+  user_id?: string;
+  error?: boolean;
+  sender_type?: string;
+}
+
+const recentMessages = new Map<string, { content: string, timestamp: number }>()
+
+export async function fetchConversationMessages(conversationId: string, userId: string): Promise<Message[]> {
+  // Intentar obtener del caché primero
+  const cachedMessages = await cache.get('messages', conversationId)
+  if (cachedMessages) {
+    return cachedMessages as Message[]
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from('messages')
+      .select('*')
+      .eq('conversation_id', conversationId)
+      .order('created_at', { ascending: false })
+      .limit(50)
+
+    if (error) {
+      console.error('Error fetching messages:', error)
+      return []
+    }
+
+    // Invertir para mantener el orden cronológico
+    const chronologicalMessages = [...data].reverse()
+    
+    // Guardar en caché con expiración de 30 segundos
+    await cache.set('messages', conversationId, chronologicalMessages)
+    return chronologicalMessages as Message[]
+  } catch (error) {
+    console.error('Error in fetchConversationMessages:', error)
+    return []
+  }
+}
+
+export async function sendMessage(message: Partial<Message>): Promise<Message | null> {
+  try {
+    // Verificar si es un mensaje duplicado reciente (dentro de 5 segundos)
+    const key = `${message.conversation_id}-${message.content}`
+    const recentMessage = recentMessages.get(key)
+    if (recentMessage && Date.now() - recentMessage.timestamp < 5000) {
+      console.log('Preventing duplicate message')
+      return null
+    }
+
+    // Registrar el mensaje como reciente
+    recentMessages.set(key, {
+      content: message.content!,
+      timestamp: Date.now()
+    })
+
+    // Limpiar mensajes antiguos (más de 10 segundos)
+    for (const [key, value] of recentMessages.entries()) {
+      if (Date.now() - value.timestamp > 10000) {
+        recentMessages.delete(key)
+      }
+    }
+
+    const { data, error } = await supabase
+      .from('messages')
+      .insert([message])
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Error sending message:', error)
+      return null
+    }
+
+    // Solo agregar a la cola si el mensaje no existe en el caché
+    if (data) {
+      const cachedMessages = await cache.get('messages', message.conversation_id!) as Message[] || []
+      const messageExists = cachedMessages.some((m: Message) => m.content === message.content)
+      
+      if (!messageExists) {
+        await cache.queueMessage('messages', message.conversation_id!, data)
+      }
+    }
+
+    return data
+  } catch (error) {
+    console.error('Error in sendMessage:', error)
+    return null
+  }
+}
+
+export async function updateMessageRead(messageId: string, read: boolean): Promise<void> {
+  try {
+    const { error } = await supabase
+      .from('messages')
+      .update({ read })
+      .eq('id', messageId)
+
+    if (error) {
+      console.error('Error updating message read status:', error)
+    }
+  } catch (error) {
+    console.error('Error in updateMessageRead:', error)
+  }
+}
+
+export function invalidateMessagesCache(conversationId: string): void {
+  cache.invalidate('messages', conversationId)
+}
+
+export async function handleOptimisticMessageUpdate(
+  conversationId: string,
+  tempMessage: Message,
+  finalMessage: Message
+): Promise<void> {
+  try {
+    // Verificar si el mensaje temporal existe antes de actualizarlo
+    const cachedMessages = await cache.get('messages', conversationId) as Message[] || []
+    const tempExists = cachedMessages.some((m: Message) => m.id === tempMessage.id)
+    
+    if (tempExists) {
+      await cache.handleOptimisticUpdate('messages', conversationId, tempMessage, finalMessage)
+    }
+  } catch (error) {
+    console.error('Error in handleOptimisticMessageUpdate:', error)
+  }
+}
+
+/**
+ * Servicio para manejo de mensajes y conversaciones
+ * Este archivo contiene funciones relacionadas con la transformación, carga y
+ * procesamiento de mensajes para el sistema de chat.
+ */
+
+// Transformar un mensaje de la base de datos al formato que espera la UI
+export function transformMessage(message: any): UIMessage | null {
+  try {
+    if (!message) return null;
+    
+    // Si ya está en el formato correcto, simplemente devolverlo
+    if (message.sender && typeof message.sender === 'string') {
+      // Validar que tenga contenido
+      if (!message.content && message.type === 'text') {
+        console.error('⚠️ Mensaje ya transformado pero sin contenido:', message);
+      }
+      return message;
+    }
+    
+    // Depuración: imprimir el mensaje original
+    const isDev = process.env.NODE_ENV === 'development';
+    if (isDev) {
+      console.log('🔍 Transformando mensaje original:', JSON.stringify(message));
+    }
+    
+    // Mapear el tipo de remitente al formato de la UI
+    let sender: 'me' | 'them' = 'them';
+    
+    // Si es tipo bot o agent, es 'me' (lo que envía el sistema)
+    if (message.sender_type === 'bot' || message.sender_type === 'agent') {
+      sender = 'me';
+    }
+    // Si es tipo user, es 'them' (lo que envía el usuario)
+    else if (message.sender_type === 'user') {
+      sender = 'them';
+    }
+    
+    // Normalizar el mensaje al formato esperado por la UI
+    const normalizedMessage: UIMessage = {
+      id: message.id || `msg_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
+      conversationId: message.conversation_id,
+      content: message.content || '', // Asegurar que content nunca sea undefined
+      timestamp: message.created_at || message.timestamp || new Date().toISOString(),
+      sender: sender,
+      status: message.status || "sent",
+      type: message.type || "text",
+      user_id: message.user_id,
+      sender_type: message.sender_type,
+    };
+    
+    // Añadir log de debug para ver los valores concretos
+    if (isDev) {
+      console.log(`💬 Transformando mensaje tipo: ${message.sender_type} -> ${normalizedMessage.sender}`);
+      console.log(`💬 Contenido del mensaje transformado: "${normalizedMessage.content}"`);
+    }
+    
+    // Validaciones básicas
+    if (!normalizedMessage.conversationId) {
+      if (isDev) console.warn('⚠️ Mensaje sin ID de conversación:', normalizedMessage);
+      return null;
+    }
+    
+    if (!normalizedMessage.content && normalizedMessage.type === 'text') {
+      if (isDev) console.warn('⚠️ Mensaje de texto sin contenido:', normalizedMessage);
+      // En vez de retornar null, establecer un contenido por defecto
+      normalizedMessage.content = '[Sin contenido]';
+    }
+    
+    // Verificar que el timestamp sea una fecha válida
+    try {
+      new Date(normalizedMessage.timestamp);
+    } catch (error) {
+      normalizedMessage.timestamp = new Date().toISOString();
+    }
+    
+    return normalizedMessage;
+  } catch (error) {
+    console.error('Error transformando mensaje:', error);
+    return null;
+  }
+}
+
+// Transformar un array de mensajes
+export function transformMessages(messages: any[]) {
+  if (!messages || !Array.isArray(messages)) return [];
+  
+  const isDev = process.env.NODE_ENV === 'development';
+  
+  // Filtrar y transformar mensajes
+  const transformedMessages = messages
+    .filter(Boolean)
+    .map(message => transformMessage(message))
+    .filter(Boolean);
+  
+  if (isDev && transformedMessages.length !== messages.length) {
+    console.warn(`⚠️ Se filtraron ${messages.length - transformedMessages.length} mensajes inválidos`);
+  }
+  
+  return transformedMessages;
+}
+
+/**
+ * Manejador centralizado para cuando llegue un mensaje nuevo
+ * Esta función se llama cuando recibimos un mensaje en tiempo real desde Supabase
+ */
+export const handleNewMessage = (
+  newMessage: any,
+  currentMessages: any[], 
+  setMessages: React.Dispatch<React.SetStateAction<any[]>>, 
+  updateConversation: (conversationId: string, content: string, timestamp: string) => void,
+  scrollToBottom?: () => void
+) => {
+  try {
+    // Ignorar si es un mensaje sin contenido o malformado
+    if (!newMessage || !newMessage.content) {
+      return;
+    }
+    
+    // Transformar el mensaje al formato que espera la UI
+    const transformedMessage = transformMessage(newMessage);
+    
+    if (!transformedMessage) {
+      return;
+    }
+    
+    const isDev = process.env.NODE_ENV === 'development';
+    if (isDev) {
+      console.log(`🔄 Procesando mensaje nuevo (${transformedMessage.sender_type}): ${transformedMessage.content.substring(0, 30)}${transformedMessage.content.length > 30 ? '...' : ''}`);
+    }
+    
+    // Asegurar que el mensaje no esté duplicado
+    setMessages(prevMessages => {
+      // Verificar si el mensaje ya existe por ID
+      const messageExists = prevMessages.some(msg => msg.id === transformedMessage.id);
+      
+      // Si ya existe, no hacer nada
+      if (messageExists) {
+        return prevMessages;
+      }
+      
+      // Verificar duplicados por contenido/timestamp (dentro de 2 segundos)
+      const isDuplicate = prevMessages.some(msg => 
+        msg.content === transformedMessage.content && 
+        Math.abs(new Date(msg.timestamp).getTime() - new Date(transformedMessage.timestamp).getTime()) < 2000
+      );
+      
+      if (isDuplicate) {
+        return prevMessages;
+      }
+      
+      if (isDev) {
+        console.log(`✅ Agregando nuevo mensaje a la UI: ${transformedMessage.id}`);
+      }
+      
+      // Actualizar data inmediatamente para mostrar cambios en UI
+      const updatedMessages = [...prevMessages, transformedMessage];
+      
+      // Ordenar por timestamp para mantener el orden cronológico
+      const sortedMessages = updatedMessages.sort((a, b) => {
+        const timeA = new Date(a.timestamp).getTime();
+        const timeB = new Date(b.timestamp).getTime();
+        return timeA - timeB;
+      });
+      
+      // Desplazar al último mensaje con animación suave
+      if (scrollToBottom) {
+        setTimeout(() => scrollToBottom(), 100);
+      }
+      
+      return sortedMessages;
+    });
+    
+    // Actualizar la conversación en la lista para reflejar el último mensaje
+    if (updateConversation && transformedMessage.conversationId) {
+      updateConversation(
+        transformedMessage.conversationId,
+        transformedMessage.content,
+        transformedMessage.timestamp
+      );
+    }
+  } catch (error) {
+    console.error('❌ Error al manejar mensaje nuevo:', error);
+  }
+};
+
+/**
+ * Obtiene los mensajes para una conversación específica
+ * Esta función se asegura de filtrar adecuadamente por ID de conversación
+ */
+export async function getMessagesForConversation(conversationId: string) {
+  try {
+    if (!conversationId) {
+      console.error('❌ Error: se requiere un ID de conversación válido');
+      return [];
+    }
+    
+    console.log(`🔄 Obteniendo mensajes para conversación: ${conversationId}`);
+    
+    // Obtener mensajes desde el API
+    const response = await fetchMessages(conversationId);
+    
+    console.log('Respuesta de fetchMessages:', response);
+
+    // Comprobar si la respuesta es un objeto con una propiedad 'messages'
+    let messagesData;
+    if (response && typeof response === 'object' && 'messages' in response && Array.isArray(response.messages)) {
+      console.log(`✅ Respuesta contiene propiedad 'messages' con ${response.messages.length} mensajes`);
+      messagesData = response.messages;
+    } else if (Array.isArray(response)) {
+      console.log(`✅ Respuesta es un array con ${response.length} mensajes`);
+      messagesData = response;
+    } else {
+      console.error('❌ Error: los datos de mensajes no tienen un formato válido', response);
+      if (response && typeof response === 'object') {
+        console.log('Propiedades del objeto:', Object.keys(response));
+      }
+      // Si no hay datos válidos, crear un array vacío
+      messagesData = [];
+    }
+    
+    console.log(`✅ API devolvió ${messagesData?.length || 0} mensajes para conversación ${conversationId}`);
+    
+    // Si no hay mensajes, devolver array vacío
+    if (!messagesData || !messagesData.length) {
+      console.log('No hay mensajes disponibles para esta conversación');
+      return [];
+    }
+    
+    // Transformar los mensajes al formato UI
+    const transformedMessages = transformMessages(messagesData);
+    console.log(`✅ Mensajes transformados: ${transformedMessages.length}`);
+    
+    // Aplicar doble verificación para asegurar que los mensajes pertenezcan a esta conversación
+    const filteredMessages = transformedMessages.filter(msg => {
+      if (!msg) {
+        console.warn('⚠️ Mensaje nulo encontrado durante el filtrado');
+        return false;
+      }
+      
+      if (!msg.conversationId) {
+        console.warn('⚠️ Mensaje sin ID de conversación:', msg.id);
+        return false;
+      }
+      
+      // Comprobación estricta: solo incluir mensajes de esta conversación
+      const belongs = msg.conversationId === conversationId;
+      
+      if (!belongs) {
+        console.warn(`⚠️ Mensaje ${msg.id} pertenece a conversación ${msg.conversationId}, no a ${conversationId}`);
+      }
+      
+      return belongs;
+    });
+    
+    if (filteredMessages.length !== transformedMessages.length) {
+      console.warn(
+        `⚠️ Se filtraron ${transformedMessages.length - filteredMessages.length} mensajes que no pertenecen a la conversación ${conversationId}`
+      );
+    }
+    
+    console.log(`📊 Mensajes filtrados finales: ${filteredMessages.length}`);
+    
+    // Devolver un array vacío si no hay mensajes filtrados
+    if (filteredMessages.length === 0) {
+      console.log('⚠️ No se encontraron mensajes válidos para esta conversación');
+    }
+    
+    return filteredMessages;
+  } catch (error) {
+    console.error('Error al obtener mensajes para conversación:', error);
+    return [];
+  }
+} 
