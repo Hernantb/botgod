@@ -22,7 +22,7 @@ services:
       - key: OPENAI_MODEL
         value: gpt-4-turbo-preview
       - key: GUPSHUP_API_KEY
-        sync: false
+        value: sk_f0dde30df43749e29d3fc63bb662ef9e
       - key: GUPSHUP_APP_NAME
         sync: false
       - key: GUPSHUP_PHONE_NUMBER
