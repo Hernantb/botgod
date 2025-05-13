@@ -5,12 +5,14 @@ const axios = require('axios');
 // Obtener variables de entorno
 const GUPSHUP_API_KEY = process.env.GUPSHUP_API_KEY;
 const GUPSHUP_NUMBER = process.env.GUPSHUP_NUMBER;
+const GUPSHUP_USERID = process.env.GUPSHUP_USERID;
 const TEST_NUMBER = '5212221192568'; // Número al que enviaremos la prueba
 
 async function testGupshupConnection() {
   console.log('🧪 Iniciando prueba de conexión con GupShup...');
   console.log(`🔑 API Key: ${GUPSHUP_API_KEY}`);
   console.log(`📱 Número de origen: ${GUPSHUP_NUMBER}`);
+  console.log(`👤 User ID: ${GUPSHUP_USERID}`);
   console.log(`📱 Número de destino: ${TEST_NUMBER}`);
   
   // URL correcta según el diagnóstico
@@ -31,12 +33,14 @@ async function testGupshupConnection() {
   const headers = {
     'Cache-Control': 'no-cache',
     'Content-Type': 'application/x-www-form-urlencoded',
-    'apikey': GUPSHUP_API_KEY
+    'apikey': GUPSHUP_API_KEY,
+    'userid': GUPSHUP_USERID
   };
   
   console.log('🔄 Enviando mensaje de prueba a WhatsApp...');
   console.log('📝 URL del endpoint:', apiUrl);
-  console.log('📝 Headers:', JSON.stringify(headers, null, 2));
+  console.log('📝 Headers:', JSON.stringify(headers, (key, value) => 
+    key === 'apikey' || key === 'userid' ? `${value.substring(0, 5)}...` : value));
   console.log('📝 Datos:', formData.toString());
   
   try {

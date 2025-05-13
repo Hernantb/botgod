@@ -29,11 +29,15 @@ async function sendWhatsAppResponse(recipient, message, businessConfig) {
       throw new Error('Gupshup Number no disponible en la configuración del negocio');
     }
     
+    if (!GUPSHUP_USERID) {
+      throw new Error('Gupshup User ID no disponible en la configuración del negocio');
+    }
+    
     // Normalizar número de teléfono (eliminar espacios, guiones, etc.)
     const normalizedNumber = recipient.replace(/\D/g, '');
     
-    // URL de la API de Gupshup
-    const url = 'https://api.gupshup.io/sm/api/v1/msg';
+    // URL de la API de Gupshup - ACTUALIZADA según corrección
+    const url = 'https://api.gupshup.io/wa/api/v1/msg';
     
     // Formatear mensaje según documentación de Gupshup
     const formData = new URLSearchParams();
@@ -46,20 +50,19 @@ async function sendWhatsAppResponse(recipient, message, businessConfig) {
     }));
     formData.append('src.name', businessConfig.business_name || 'Bot');
     
-    // Si tenemos userid, añadirlo
-    if (GUPSHUP_USERID) {
-      formData.append('userid', GUPSHUP_USERID);
-    }
-    
-    // Configurar headers para la petición
+    // Configurar headers para la petición - ACTUALIZADO para incluir userid
     const headers = {
       'Cache-Control': 'no-cache',
       'Content-Type': 'application/x-www-form-urlencoded',
-      'apikey': GUPSHUP_API_KEY
+      'apikey': GUPSHUP_API_KEY,
+      'userid': GUPSHUP_USERID
     };
     
     // Enviar petición a Gupshup
     console.log(`🔄 Enviando petición a Gupshup (${GUPSHUP_NUMBER} → ${normalizedNumber})`);
+    console.log(`📝 URL: ${url}`);
+    console.log(`📝 Headers: ${JSON.stringify(headers, (key, value) => key === 'apikey' ? `${value.substring(0, 5)}...` : value)}`);
+    
     const response = await axios.post(url, formData, { headers });
     
     // Verificar si la petición fue exitosa
