@@ -31,10 +31,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Configurar CORS para permitir solicitudes desde el frontend
 app.use(cors({
-  origin: function(origin, callback) {
-    // Permitir cualquier origen en desarrollo
-    return callback(null, true);
-  },
+  origin: ['http://localhost:3000', 'http://localhost:3005'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'],
   credentials: true
@@ -1780,7 +1777,7 @@ app.get('/test-notifications', (req, res) => {
 });
 
 // Configuración del puerto desde variables de entorno
-const PORT = process.env.PORT || 7778;
+const PORT = process.env.PORT || 3095;
 
 // Agregar un endpoint específico para pruebas de notificaciones
 app.post('/api/test-notification', async (req, res) => {
