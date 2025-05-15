@@ -1,308 +1,70 @@
-✅ Ruta /uploads configurada para servir archivos estáticos como respaldo
-🔄 Conexiones a Supabase inicializadas:
-  URL: https://wscijkxwevgxbgwhbqtm.supabase.co
-  ANON Key: eyJhbGciOi...
-  SERVICE Key: ...
-🚀 Servidor ejecutándose en el puerto 7777
-📝 GET /api/test-email
-🧪 Iniciando prueba de envío de correo
-📧 Configuración de correo para prueba:
-- Remitente: "bexorai@gmail.com"
-- Contraseña: "gqwi...kylf"
-- Destinatario: "nan_martinez@yahoo.com"
-[2025-04-08 16:33:16] DEBUG Creating transport: nodemailer (6.10.0; +https://nodemailer.com/; SMTP/6.10.0[client:6.10.0])
-[2025-04-08 16:33:22] DEBUG [O5bFHC0vpo] Resolved smtp.gmail.com as 142.250.115.108 [cache miss]
-[2025-04-08 16:33:22] INFO  [O5bFHC0vpo] Secure connection established to 142.250.115.108:465
-[2025-04-08 16:33:22] DEBUG [O5bFHC0vpo] S: 220 smtp.gmail.com ESMTP 586e51a60fabf-2cc8463aadesm2613933fac.27 - gsmtp
-[2025-04-08 16:33:22] DEBUG [O5bFHC0vpo] C: EHLO Hernans-MacBook-Air.local
-[2025-04-08 16:33:22] DEBUG [O5bFHC0vpo] S: 250-smtp.gmail.com at your service, [187.224.255.226]
-[2025-04-08 16:33:22] DEBUG [O5bFHC0vpo] S: 250-SIZE 35882577
-[2025-04-08 16:33:22] DEBUG [O5bFHC0vpo] S: 250-8BITMIME
-[2025-04-08 16:33:22] DEBUG [O5bFHC0vpo] S: 250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
-[2025-04-08 16:33:22] DEBUG [O5bFHC0vpo] S: 250-ENHANCEDSTATUSCODES
-[2025-04-08 16:33:22] DEBUG [O5bFHC0vpo] S: 250-PIPELINING
-[2025-04-08 16:33:22] DEBUG [O5bFHC0vpo] S: 250-CHUNKING
-[2025-04-08 16:33:22] DEBUG [O5bFHC0vpo] S: 250 SMTPUTF8
-[2025-04-08 16:33:22] DEBUG [O5bFHC0vpo] SMTP handshake finished
-[2025-04-08 16:33:22] DEBUG [O5bFHC0vpo] C: AUTH PLAIN AGJleG9yYWlAZ21haWwuY29tAC8qIHNlY3JldCAqLw==
-[2025-04-08 16:33:23] DEBUG [O5bFHC0vpo] S: 235 2.7.0 Accepted
-[2025-04-08 16:33:23] INFO  [O5bFHC0vpo] User "bexorai@gmail.com" authenticated
-[2025-04-08 16:33:23] DEBUG [O5bFHC0vpo] C: QUIT
-✅ Servidor de correo verificado correctamente
-📧 Enviando email de prueba a: nan_martinez@yahoo.com
-[2025-04-08 16:33:23] DEBUG Sending mail using SMTP/6.10.0[client:6.10.0]
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] Resolved smtp.gmail.com as 142.250.115.108 [cache hit]
-[2025-04-08 16:33:23] DEBUG [O5bFHC0vpo] S: 221 2.0.0 closing connection 586e51a60fabf-2cc8463aadesm2613933fac.27 - gsmtp
-[2025-04-08 16:33:23] DEBUG [O5bFHC0vpo] Closing connection to the server using "end"
-[2025-04-08 16:33:23] INFO  [O5bFHC0vpo] Connection closed
-[2025-04-08 16:33:23] INFO  [9E0ZQil0I] Secure connection established to 142.250.115.108:465
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] S: 220 smtp.gmail.com ESMTP 586e51a60fabf-2cc83eb5147sm2638178fac.0 - gsmtp
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] C: EHLO Hernans-MacBook-Air.local
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] S: 250-smtp.gmail.com at your service, [187.224.255.226]
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] S: 250-SIZE 35882577
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] S: 250-8BITMIME
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] S: 250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] S: 250-ENHANCEDSTATUSCODES
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] S: 250-PIPELINING
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] S: 250-CHUNKING
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] S: 250 SMTPUTF8
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] SMTP handshake finished
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] C: AUTH PLAIN AGJleG9yYWlAZ21haWwuY29tAC8qIHNlY3JldCAqLw==
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] S: 235 2.7.0 Accepted
-[2025-04-08 16:33:23] INFO  [9E0ZQil0I] User "bexorai@gmail.com" authenticated
-[2025-04-08 16:33:23] INFO  Sending message <5c452b33-de0c-d27a-3801-ae5f0565cfac@gmail.com> to <nan_martinez@yahoo.com>
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] C: MAIL FROM:<bexorai@gmail.com>
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] S: 250 2.1.0 OK 586e51a60fabf-2cc83eb5147sm2638178fac.0 - gsmtp
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] C: RCPT TO:<nan_martinez@yahoo.com>
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] S: 250 2.1.5 OK 586e51a60fabf-2cc83eb5147sm2638178fac.0 - gsmtp
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] C: DATA
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] S: 354 Go ahead 586e51a60fabf-2cc83eb5147sm2638178fac.0 - gsmtp
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] From: "WhatsApp Bot - Prueba" <bexorai@gmail.com>
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] To: nan_martinez@yahoo.com
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] Subject: =?UTF-8?Q?Prueba_de_env=C3=ADo_de_notificaci=C3=B3?=
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I]  =?UTF-8?Q?n_-_2025-04-08T16=3A33=3A23=2E105Z?=
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] Message-ID: <5c452b33-de0c-d27a-3801-ae5f0565cfac@gmail.com>
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] Content-Transfer-Encoding: quoted-printable
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] Date: Tue, 08 Apr 2025 16:33:23 +0000
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] MIME-Version: 1.0
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] Content-Type: text/html; charset=utf-8
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] 
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] 
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I]         <div style=3D"font-family: Arial, sans-serif; max-width: 600px; =
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] margin: 0 auto;">
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I]           <h2 style=3D"color: #2c3e50; border-bottom: 1px=
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I]  solid #eee; padding-bottom: 10px;">Prueba de Notificaci=C3=B3n</h2>
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I]           <p>Este es un correo de prueba para verificar la =
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] configuraci=C3=B3n de notificaciones.</p>
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I]           <p>Fecha y hora: =
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] 4/8/2025, 10:33:23 AM</p>
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I]         </div>
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I]      =20
-[2025-04-08 16:33:23] DEBUG [9E0ZQil0I] .
-[2025-04-08 16:33:23] INFO  [9E0ZQil0I] <815 bytes encoded mime message (source size 806 bytes)>
-[2025-04-08 16:33:24] DEBUG [9E0ZQil0I] S: 250 2.0.0 OK  1744130004 586e51a60fabf-2cc83eb5147sm2638178fac.0 - gsmtp
-[2025-04-08 16:33:24] DEBUG [9E0ZQil0I] Closing connection to the server using "end"
-✅ Email de prueba enviado: <5c452b33-de0c-d27a-3801-ae5f0565cfac@gmail.com>
-[2025-04-08 16:33:24] INFO  [9E0ZQil0I] Connection closed
-📝 POST /api/messages
-📨 Solicitud para guardar mensaje en conversación 4a42aa05-2ffd-418b-aa52-29e7c571eee8: "¡Perfecto! un asesor te llamará mañana a la 13."
-📨 Mensaje ya enviado a WhatsApp: No
-🚨 MENSAJE CLAVE DETECTADO: "¡Perfecto! un asesor te llamará mañana a la 13."
-🚨 TIPO DE MENSAJE: bot
-🚨 CONVERSATION ID: 4a42aa05-2ffd-418b-aa52-29e7c571eee8
-🔍 Buscando business con número +15557033313...
-✅ Business encontrado: {
-  id: '2d385aa5-40e0-4ec9-9360-19281bc605e4',
-  name: 'Hernán Tenorio',
-  gupshup_api_key: 'sk_8def1775845143bc8da6fbcfedb285c2',
-  whatsapp_number: '+15557033313',
-  plan_type: 'basic',
-  max_concurrent_chats: null,
-  created_at: '2025-03-15T06:09:12.885428+00:00',
-  updated_at: '2025-03-15T06:09:12.885428+00:00'
-}
-👤 Usando sender_type: bot
-🔍 Verificando si el mensaje '¡Perfecto! un asesor te llamará mañana a la 13.' requiere notificación...
-🔍 === VERIFICANDO FRASES PARA NOTIFICACIÓN ===
-🔍 Mensaje a verificar: "¡Perfecto! un asesor te llamará mañana a la 13."
-🔍 Mensaje normalizado: "¡perfecto! un asesor te llamara manana a la 13."
-✅ COINCIDENCIA EXACTA detectada con frase: "perfecto! un asesor te llamara"
-🔔 ¡Mensaje requiere notificación! Obteniendo número de teléfono...
-📱 Número de teléfono obtenido: 5212221192568
-📧 Enviando notificación para mensaje "¡Perfecto! un asesor te llamará mañana a la 13."
+🚀 Iniciando carga de configuraciones de negocios...
+🔄 Cargando configuraciones de negocios desde Supabase...
+📢 GLOBAL-PATCH: Verificando variables al inicio:
+- CONTROL_PANEL_URL: no definida
+- NODE_ENV: no definido
+- RENDER: no definido
+✅ node-fetch cargado exitosamente
+🔄 Inicializando cliente Supabase...
+✅ Cliente Supabase inicializado correctamente
+🔍 FIX-REAL-BOT: Estado de URL antes de procesar:
+- CONTROL_PANEL_URL: no definida
+- NODE_ENV: no definido
+- RENDER: no definido
+🔍 FIX-REAL-BOT: Usando selección de URL para entorno de desarrollo
+🌐 Ambiente de DESARROLLO detectado - Intentando URL local
+🔍 Verificando disponibilidad de servidor local en desarrollo: disponible
+🌐 Ambiente de DESARROLLO detectado - Intentando URL local
+🔍 Verificando disponibilidad de servidor local en desarrollo: disponible
+🔧 APLICANDO PARCHE PARA CORREGIR URLs DEL BOT WHATSAPP
+CONTROL_PANEL_URL actual: http://localhost:4001
+Ambiente: Desarrollo
+URL que se usará: http://localhost:4001
+📡 VERIFICACIÓN DE ACCESO A SUPABASE
+🔍 Intentando acceder a Supabase (https://wscijkxwevgxbgwhbqtm.supabase.co) con Axios...
+🔧 GLOBAL-PATCH: Estableciendo URL predeterminada: http://localhost:3000/api/register-bot-response
+📌 GLOBAL-PATCH: URL final: http://localhost:3000/api/register-bot-response
+🔧 PARCHE GLOBAL APLICADO
+✅ Función global.registerBotResponse definida
+ℹ️ Guardando mensajes en Supabase: https://wscijkxwevgxbgwhbqtm.supabase.co
+🔄 Configuración de Supabase:
+🔄 URL configurada: ❌ NO
+🔄 KEY configurada: ❌ NO
+📧 Configuración de notificaciones por correo:
+📧 Correo remitente: bexorai@gmail.com
+📧 Correo destinatario predeterminado: bexorai@gmail.com
+📧 Contraseña configurada: ❌ NO
 
-📧 === ENVIANDO NOTIFICACIÓN DE NEGOCIO ===
-📧 ID Conversación: 4a42aa05-2ffd-418b-aa52-29e7c571eee8
-📧 Mensaje Bot: "¡Perfecto! un asesor te llamará mañana a la 13."
-📧 Teléfono Cliente: 5212221192568
-📧 ID de Negocio: 2d385aa5-40e0-4ec9-9360-19281bc605e4
-🔍 Obteniendo detalles de la conversación...
-✅ Detalles de conversación obtenidos correctamente
-🔍 Obteniendo historial reciente de mensajes...
-✅ Se encontraron 10 mensajes recientes
-🔍 Obteniendo información del negocio...
-✅ Información de negocio obtenida: Hernán Tenorio
-📧 Configuración de correo:
-- Remitente (EMAIL_USER): "bexorai@gmail.com" (valor actual de la variable: "bexorai@gmail.com")
-- Contraseña (EMAIL_APP_PASSWORD): "gqwi...kylf" (longitud: 19)
-- Destinatario principal (NOTIFICATION_EMAIL): "nan_martinez@yahoo.com"
-- BCC (BCC_EMAIL): "copia@brexor.com"
-[2025-04-08 16:33:37] DEBUG Creating transport: nodemailer (6.10.0; +https://nodemailer.com/; SMTP/6.10.0[client:6.10.0])
-[2025-04-08 16:33:37] DEBUG [aJqYuLecDZg] Resolved smtp.gmail.com as 142.250.115.108 [cache hit]
-[2025-04-08 16:33:37] INFO  [aJqYuLecDZg] Secure connection established to 142.250.115.108:465
-[2025-04-08 16:33:37] DEBUG [aJqYuLecDZg] S: 220 smtp.gmail.com ESMTP 586e51a60fabf-2cc84be9376sm2714357fac.50 - gsmtp
-[2025-04-08 16:33:37] DEBUG [aJqYuLecDZg] C: EHLO Hernans-MacBook-Air.local
-[2025-04-08 16:33:37] DEBUG [aJqYuLecDZg] S: 250-smtp.gmail.com at your service, [187.224.255.226]
-[2025-04-08 16:33:37] DEBUG [aJqYuLecDZg] S: 250-SIZE 35882577
-[2025-04-08 16:33:37] DEBUG [aJqYuLecDZg] S: 250-8BITMIME
-[2025-04-08 16:33:37] DEBUG [aJqYuLecDZg] S: 250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
-[2025-04-08 16:33:37] DEBUG [aJqYuLecDZg] S: 250-ENHANCEDSTATUSCODES
-[2025-04-08 16:33:37] DEBUG [aJqYuLecDZg] S: 250-PIPELINING
-[2025-04-08 16:33:37] DEBUG [aJqYuLecDZg] S: 250-CHUNKING
-[2025-04-08 16:33:37] DEBUG [aJqYuLecDZg] S: 250 SMTPUTF8
-[2025-04-08 16:33:37] DEBUG [aJqYuLecDZg] SMTP handshake finished
-[2025-04-08 16:33:37] DEBUG [aJqYuLecDZg] C: AUTH PLAIN AGJleG9yYWlAZ21haWwuY29tAC8qIHNlY3JldCAqLw==
-[2025-04-08 16:33:37] DEBUG [aJqYuLecDZg] S: 235 2.7.0 Accepted
-[2025-04-08 16:33:37] INFO  [aJqYuLecDZg] User "bexorai@gmail.com" authenticated
-[2025-04-08 16:33:37] DEBUG [aJqYuLecDZg] C: QUIT
-✅ Servidor de correo verificado correctamente
-📧 Tipo de notificación: assistance
-📧 Agregando BCC: copia@brexor.com
-📧 Enviando email a: nan_martinez@yahoo.com
-[2025-04-08 16:33:37] DEBUG Sending mail using SMTP/6.10.0[client:6.10.0]
-[2025-04-08 16:33:37] DEBUG [Aw5Du5eLi0] Resolved smtp.gmail.com as 142.250.115.108 [cache hit]
-[2025-04-08 16:33:37] DEBUG [aJqYuLecDZg] S: 221 2.0.0 closing connection 586e51a60fabf-2cc84be9376sm2714357fac.50 - gsmtp
-[2025-04-08 16:33:37] DEBUG [aJqYuLecDZg] Closing connection to the server using "end"
-[2025-04-08 16:33:37] INFO  [aJqYuLecDZg] Connection closed
-[2025-04-08 16:33:37] INFO  [Aw5Du5eLi0] Secure connection established to 142.250.115.108:465
-[2025-04-08 16:33:37] DEBUG [Aw5Du5eLi0] S: 220 smtp.gmail.com ESMTP 5614622812f47-400691063casm503428b6e.14 - gsmtp
-[2025-04-08 16:33:37] DEBUG [Aw5Du5eLi0] C: EHLO Hernans-MacBook-Air.local
-[2025-04-08 16:33:37] DEBUG [Aw5Du5eLi0] S: 250-smtp.gmail.com at your service, [187.224.255.226]
-[2025-04-08 16:33:37] DEBUG [Aw5Du5eLi0] S: 250-SIZE 35882577
-[2025-04-08 16:33:37] DEBUG [Aw5Du5eLi0] S: 250-8BITMIME
-[2025-04-08 16:33:37] DEBUG [Aw5Du5eLi0] S: 250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
-[2025-04-08 16:33:37] DEBUG [Aw5Du5eLi0] S: 250-ENHANCEDSTATUSCODES
-[2025-04-08 16:33:37] DEBUG [Aw5Du5eLi0] S: 250-PIPELINING
-[2025-04-08 16:33:37] DEBUG [Aw5Du5eLi0] S: 250-CHUNKING
-[2025-04-08 16:33:37] DEBUG [Aw5Du5eLi0] S: 250 SMTPUTF8
-[2025-04-08 16:33:37] DEBUG [Aw5Du5eLi0] SMTP handshake finished
-[2025-04-08 16:33:37] DEBUG [Aw5Du5eLi0] C: AUTH PLAIN AGJleG9yYWlAZ21haWwuY29tAC8qIHNlY3JldCAqLw==
-[2025-04-08 16:33:37] DEBUG [Aw5Du5eLi0] S: 235 2.7.0 Accepted
-[2025-04-08 16:33:37] INFO  [Aw5Du5eLi0] User "bexorai@gmail.com" authenticated
-[2025-04-08 16:33:37] INFO  Sending message <b5d271ab-013f-7b7b-3d4e-0d334c53f76e@gmail.com> to <nan_martinez@yahoo.com, copia@brexor.com>
-[2025-04-08 16:33:37] DEBUG [Aw5Du5eLi0] C: MAIL FROM:<bexorai@gmail.com>
-[2025-04-08 16:33:37] DEBUG [Aw5Du5eLi0] S: 250 2.1.0 OK 5614622812f47-400691063casm503428b6e.14 - gsmtp
-[2025-04-08 16:33:37] DEBUG [Aw5Du5eLi0] C: RCPT TO:<nan_martinez@yahoo.com>
-[2025-04-08 16:33:37] DEBUG [Aw5Du5eLi0] C: RCPT TO:<copia@brexor.com>
-[2025-04-08 16:33:37] DEBUG [Aw5Du5eLi0] S: 250 2.1.5 OK 5614622812f47-400691063casm503428b6e.14 - gsmtp
-[2025-04-08 16:33:37] DEBUG [Aw5Du5eLi0] S: 250 2.1.5 OK 5614622812f47-400691063casm503428b6e.14 - gsmtp
-[2025-04-08 16:33:37] DEBUG [Aw5Du5eLi0] C: DATA
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] S: 354 Go ahead 5614622812f47-400691063casm503428b6e.14 - gsmtp
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] From: WhatsApp Bot <bexorai@gmail.com>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] To: nan_martinez@yahoo.com
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] Subject: Cliente Requiere Asistencia por WhatsApp - Cliente 5212221192568
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] Message-ID: <b5d271ab-013f-7b7b-3d4e-0d334c53f76e@gmail.com>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] Content-Transfer-Encoding: quoted-printable
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] Date: Tue, 08 Apr 2025 16:33:37 +0000
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] MIME-Version: 1.0
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] Content-Type: text/html; charset=utf-8
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] 
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] 
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]       <div style=3D"font-family: Arial, sans-serif; max-width: 600px; =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] margin: 0 auto;">
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         <h2 style=3D"color: #2c3e50; border-bottom: 1px =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] solid #eee; padding-bottom: 10px;">Cliente Requiere Asistencia por =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] WhatsApp</h2>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]        =20
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         <div style=3D"background-color: #f8f9fa; =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]           <h3 style=3D"margin-top: 0; color: #34495e;">Datos del =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] Cliente</h3>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]           <p><strong>Tel=C3=A9fono:</strong> 5212221192568</p>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]           <p><strong>Fecha:</strong> 4/8/2025, 10:33:37 AM</p>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         </div>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]        =20
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         <div style=3D"margin-bottom: 20px;">
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]           <h3 style=3D"color: #34495e;">Mensaje que Gener=C3=B3 la =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] Notificaci=C3=B3n</h3>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]           <div style=3D"background-color: #e6f7ff; =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] padding: 10px; border-radius: 5px;">
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]             =C2=A1Perfecto! un asesor =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] te llamar=C3=A1 ma=C3=B1ana a la 13.
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]           </div>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         </div>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]        =20
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         <div style=3D"margin-bottom: 20px;">
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]           <h3 style=3D"color: #34495e;">Historial Reciente de la =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] Conversaci=C3=B3n</h3>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]           <div style=3D"margin-bottom: 10px; =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] padding: 8px; border-radius: 5px; background-color: #e6f7ff;">
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         <strong>Bot (4/8/2025, 10:33:36 AM):</strong><br/>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         =C2=A1Perfecto! un asesor te llamar=C3=A1 ma=C3=B1ana a la 13.
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]       </div><div style=3D"margin-bottom: 10px; padding: 8px; border-radius:=
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]  5px; background-color: #e6f7ff;">
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         <strong>Bot (4/8/2025, 10:24:32 =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] AM):</strong><br/>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         =C2=A1Perfecto! un asesor te llamar=C3=A1 =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] ma=C3=B1ana a la 13.
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]       </div><div style=3D"margin-bottom: 10px; =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] padding: 8px; border-radius: 5px; background-color: #f0f0f0;">
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         <strong>Cliente (4/8/2025, 10:24:26 AM):</strong><br/>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         Mejor ma=C3=B1ana
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]       </div><div style=3D"margin-bottom: 10px; =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] padding: 8px; border-radius: 5px; background-color: #e6f7ff;">
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         <strong>Bot (4/8/2025, 10:23:13 AM):</strong><br/>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         =C2=A1Perfecto! Un asesor te llamar=C3=A1 pronto para confirmar los=
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]  detalles.
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]       </div><div style=3D"margin-bottom: 10px; padding: 8px; =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] border-radius: 5px; background-color: #e6f7ff;">
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         <strong>Bot =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] (4/8/2025, 10:22:13 AM):</strong><br/>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         =C2=A1Perfecto! Tu cita ha =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] sido confirmada para ma=C3=B1ana. Gracias.
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]       </div><div =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] style=3D"margin-bottom: 10px; padding: 8px; border-radius: 5px; =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] background-color: #e6f7ff;">
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         <strong>Bot (4/8/2025, 10:17:09 =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] AM):</strong><br/>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         =C2=A1Perfecto! un asesor te llamar=C3=A1 hoy a =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] la 13.
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]       </div><div style=3D"margin-bottom: 10px; padding: 8px; =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] border-radius: 5px; background-color: #f0f0f0;">
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         <strong>Cliente =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] (4/8/2025, 10:17:04 AM):</strong><br/>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         Si perd=C3=B3n mejor hoy a =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] la 13
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]       </div><div style=3D"margin-bottom: 10px; padding: 8px; =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] border-radius: 5px; background-color: #e6f7ff;">
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         <strong>Bot =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] (4/8/2025, 9:56:38 AM):</strong><br/>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         =C2=A1Perfecto! tu cita ha =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] sido confirmada para hoy a las 6. Si necesitas algo m=C3=A1s, no dudes en =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] dec=C3=ADrmelo.
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]       </div><div style=3D"margin-bottom: 10px; padding: =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] 8px; border-radius: 5px; background-color: #f0f0f0;">
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         <strong>Cliente (4/8/2025, 9:56:33 AM):</strong><br/>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         Mejor quiero mi cita hoy q la 6
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]       </div><div =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] style=3D"margin-bottom: 10px; padding: 8px; border-radius: 5px; =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] background-color: #e6f7ff;">
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         <strong>Bot (4/8/2025, 9:55:32 =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] AM):</strong><br/>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         =C2=A1Perfecto! tu cita ha sido confirmada para =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] hoy a las 6. Si necesitas algo m=C3=A1s, no dudes en decirme.
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]       </div>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         </div>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]        =20
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         <div style=3D"text-align: center; =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] margin-top: 30px;">
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]           <a href=3D"http://localhost:3010/conversation=
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] s/4a42aa05-2ffd-418b-aa52-29e7c571eee8"=20
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]              =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] style=3D"background-color: #3498db; color: white; padding: 10px 20px; =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] text-decoration: none; border-radius: 5px; font-weight: bold;">
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]             Ver Conversaci=C3=B3n Completa
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]           </a>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         </div>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]        =20
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         <p style=3D"color: #7f8c8d; font-size: 12px; margin-top:=
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]  30px; text-align: center;">
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]           Este es un mensaje autom=C3=A1tico =
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] de Hern=C3=A1n Tenorio. Por favor, no respondas directamente a este correo.
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]         </p>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]       </div>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0]    =20
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] .
-[2025-04-08 16:33:38] INFO  [Aw5Du5eLi0] <4681 bytes encoded mime message (source size 4615 bytes)>
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] S: 250 2.0.0 OK  1744130018 5614622812f47-400691063casm503428b6e.14 - gsmtp
-[2025-04-08 16:33:38] DEBUG [Aw5Du5eLi0] Closing connection to the server using "end"
-✅ Email enviado: <b5d271ab-013f-7b7b-3d4e-0d334c53f76e@gmail.com>
-[2025-04-08 16:33:38] INFO  [Aw5Du5eLi0] Connection closed
-⚠️ Error al guardar registro de notificación: undefined
-📧 Resultado del envío de notificación: ÉXITO ✅
-⚠️ Error al actualizar estado de notificación: Could not find the 'notification_timestamp' column of 'conversations' in the schema cache
-📱 Enviando mensaje a WhatsApp para 5212221192568
-❌ Error al marcar mensaje como enviado: Could not find the 'sent_to_whatsapp' column of 'messages' in the schema cache
-📤 Intento 1/3 para enviar mensaje a WhatsApp
-✅ Mensaje enviado correctamente a WhatsApp: {"messageId":"936ea40e-8301-4dbb-8371-c7995f2634b6","phone":"5212221192568","message":"¡Perfecto! un asesor te llamará mañana a la 13.","status":"SENT","timestamp":"2025-04-08T16:33:40.124Z","provider":"gupshup","details":{"success":true,"messageId":"936ea40e-8301-4dbb-8371-c7995f2634b6","status":"submitted","responseData":{"status":"submitted","messageId":"936ea40e-8301-4dbb-8371-c7995f2634b6"}}}
-✅ Mensaje guardado exitosamente para conversación 4a42aa05-2ffd-418b-aa52-29e7c571eee8
+🔔 Módulo de notificaciones inicializado
+📧 Remitente: bexorai@gmail.com
+📧 Destinatario por defecto: bexorai@gmail.com
+🔑 Contraseña configurada: ❌ NO
+🔍 Modo diagnóstico: ACTIVADO
+📝 Frases predeterminadas: 4
+
+🧹 Caché de palabras clave limpiada para todos los negocios
+🔄 Inicializando configuraciones desde Supabase...
+🔄 Cargando configuraciones de negocios desde Supabase...
+🔧 APLICANDO PARCHE PARA CORREGIR URLs DEL BOT WHATSAPP
+Ambiente: Desarrollo
+Render detectado: NO
+CONTROL_PANEL_URL actual: http://localhost:3000/api/register-bot-response
+URL final que se usará: http://localhost:3000/api/register-bot-response
+✅ Parche aplicado correctamente
+📝 De ahora en adelante, las URLs duplicadas serán corregidas automáticamente
+🌐 En ambiente de producción, se usará: URL de desarrollo
+🔍 También puedes usar la función global registerBotResponse() para enviar mensajes
+🔑 API Keys cargadas:
+OPENAI_API_KEY: ❌ FALTA
+GUPSHUP_API_KEY: ❌ FALTA
+GUPSHUP_NUMBER: ❌ FALTA
+GUPSHUP_USERID: ❌ FALTA
+CONTROL_PANEL_URL: http://localhost:3000/api/register-bot-response
+📊 Estado de claves de API (variables de entorno):
+- OpenAI API Key: ❌ Falta
+- GupShup API Key: ❌ Falta
+- GupShup Number: ❌ Falta
+- GupShup User ID: ❌ Falta
+🔍 Se intentarán cargar claves desde Supabase...
+🔌 Cliente Supabase inicializado con URL: https://wscijkxwevgxbgwhbqtm.supabase.co
+🔑 Clave de Supabase configurada: ✅ (primeros caracteres: eyJhbGciOi...)

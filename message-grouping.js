@@ -138,7 +138,7 @@ async function processMessageGroup(conversationId) {
   // Procesar el mensaje combinado
   try {
     // Procesar con OpenAI y obtener respuesta
-    const botResponse = await processMessageWithOpenAI(firstMessage.sender, combinedMessage, conversationId);
+    const botResponse = await processMessageWithOpenAI(firstMessage.sender, combinedMessage, conversationId, process.env.BUSINESS_ID);
     
     if (botResponse) {
       console.log(`✅ Respuesta generada por OpenAI para mensaje combinado: "${botResponse.substring(0, 50)}${botResponse.length > 50 ? '...' : ''}"`);
@@ -180,7 +180,7 @@ async function processSingleMessage(messageData) {
   
   try {
     // Procesar con OpenAI y obtener respuesta
-    const botResponse = await processMessageWithOpenAI(sender, message, conversationId);
+    const botResponse = await processMessageWithOpenAI(sender, message, conversationId, process.env.BUSINESS_ID);
     
     if (botResponse) {
       console.log(`✅ Respuesta generada por OpenAI: "${botResponse.substring(0, 50)}${botResponse.length > 50 ? '...' : ''}"`);

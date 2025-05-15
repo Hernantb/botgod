@@ -2,14 +2,15 @@
  * Configuración para Supabase
  * 
  * Este archivo contiene las credenciales para conectarse a Supabase.
- * IMPORTANTE: Reemplazar la clave anónima con la correcta.
+ * IMPORTANTE: Este archivo debe estar en la raíz del proyecto y ser importado por index.js
  */
 
 // URL de tu proyecto Supabase - ¡CONFIRMADO COMO EXISTENTE!
 const SUPABASE_URL = 'https://wscijkxwevgxbgwhbqtm.supabase.co';
 
-// Clave anónima de tu proyecto Supabase
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndzY2lqa3h3ZXZneGJnd2hicXRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE4MjI3NjgsImV4cCI6MjA1NzM5ODc2OH0._HSnvof7NUk6J__qqq3gJvbJRZnItCAmlI5HYAL8WVI';
+// Clave de servicio para Supabase (service_role)
+// Esta clave tiene permisos completos y debe mantenerse segura
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndzY2lqa3h3ZXZneGJnd2hicXRtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MTgyMjc2OCwiZXhwIjoyMDU3Mzk4NzY4fQ.eAMYqHQ5ma_2tPXOwCYKw3tt_vERE0zhBj2xS1srv9M';
 
 // ID del negocio para las conversaciones
 const BUSINESS_ID = '2d385aa5-40e0-4ec9-9360-19281bc605e4';

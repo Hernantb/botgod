@@ -1,32 +1,22 @@
-// supabase-config.cjs - Configuración del cliente de Supabase
-require('dotenv').config();
-const { createClient } = require('@supabase/supabase-js');
+/**
+ * Configuración para Supabase
+ * 
+ * Este archivo contiene las credenciales para conectarse a Supabase.
+ * IMPORTANTE: Este archivo debe estar en la raíz del proyecto y ser importado por index.js
+ */
 
-// Obtener URL y Key de Supabase desde variables de entorno
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_KEY = process.env.SUPABASE_KEY;
+// URL de tu proyecto Supabase - ¡CONFIRMADO COMO EXISTENTE!
+const SUPABASE_URL = 'https://wscijkxwevgxbgwhbqtm.supabase.co';
 
-// Verificar configuración
-console.log(`🔄 Configuración de Supabase:`);
-console.log(`🔄 URL configurada: ${SUPABASE_URL ? '✅ SÍ' : '❌ NO'}`);
-console.log(`🔄 KEY configurada: ${SUPABASE_KEY ? '✅ SÍ' : '❌ NO'}`);
+// Clave de servicio para Supabase (service_role)
+// Esta clave tiene permisos completos y debe mantenerse segura
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndzY2lqa3h3ZXZneGJnd2hicXRtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MTgyMjc2OCwiZXhwIjoyMDU3Mzk4NzY4fQ.eAMYqHQ5ma_2tPXOwCYKw3tt_vERE0zhBj2xS1srv9M';
 
-// Si no hay configuración, mostrar advertencia
-if (!SUPABASE_URL || !SUPABASE_KEY) {
-  console.warn('⚠️ ADVERTENCIA: Variables de entorno SUPABASE_URL y/o SUPABASE_KEY no configuradas');
-}
+// ID del negocio para las conversaciones
+const BUSINESS_ID = '2d385aa5-40e0-4ec9-9360-19281bc605e4';
 
-// Crear cliente de Supabase (incluso si las variables están vacías, para evitar errores)
-const supabase = createClient(
-  SUPABASE_URL || 'https://example.supabase.co',
-  SUPABASE_KEY || 'fallback-key-for-development'
-);
-
-// Exportar cliente y configuración
 module.exports = {
-  supabase,
-  supabaseConfig: {
-    url: SUPABASE_URL,
-    key: SUPABASE_KEY
-  }
+  SUPABASE_URL,
+  SUPABASE_KEY,
+  BUSINESS_ID
 }; 
