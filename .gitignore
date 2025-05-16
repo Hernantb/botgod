@@ -118,3 +118,41 @@ web_modules/
 
 # Grunt
 .grunt
+
+# Archivos de configuración y claves
+.env.*
+*.pem
+*.key
+*client_secret*.json
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Carpetas de build
+dist/
+build/
+out/
+
+# Archivos temporales
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+
+# Archivos de respaldo
+*.backup
+*-backup.*
+*copy.*
+*.old
+*backup*/
