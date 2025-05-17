@@ -35,23 +35,23 @@ async function checkEnvironmentVariables() {
   console.log('\n🔑 Verificando variables de entorno:');
   
   // Variables obligatorias de Google
-  const googleClientId = process.env.***REMOVED***;
-  const googleClientSecret = process.env.***REMOVED***;
+  const googleClientId = process.env.GOOGLE_CLIENT_ID;
+  const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
   const googleRedirectUri = process.env.GOOGLE_REDIRECT_URI;
   
   // Verificar y alertar sobre problemas
   if (!googleClientId || googleClientId === 'YOUR_CLIENT_ID') {
-    console.error('❌ ***REMOVED*** no está configurado correctamente');
-    console.log('   - Establece un valor real en .env: ***REMOVED***=tu_client_id');
+    console.error('❌ GOOGLE_CLIENT_ID no está configurado correctamente');
+    console.log('   - Establece un valor real en .env: GOOGLE_CLIENT_ID=tu_client_id');
   } else {
-    console.log('✅ ***REMOVED*** configurado correctamente');
+    console.log('✅ GOOGLE_CLIENT_ID configurado correctamente');
   }
   
   if (!googleClientSecret || googleClientSecret === 'YOUR_CLIENT_SECRET') {
-    console.error('❌ ***REMOVED*** no está configurado correctamente');
-    console.log('   - Establece un valor real en .env: ***REMOVED***=tu_client_secret');
+    console.error('❌ GOOGLE_CLIENT_SECRET no está configurado correctamente');
+    console.log('   - Establece un valor real en .env: GOOGLE_CLIENT_SECRET=tu_client_secret');
   } else {
-    console.log('✅ ***REMOVED*** configurado correctamente');
+    console.log('✅ GOOGLE_CLIENT_SECRET configurado correctamente');
   }
   
   if (!googleRedirectUri) {

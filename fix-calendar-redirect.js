@@ -64,8 +64,8 @@ async function main() {
   // 7.2 Verificar credenciales de Google
   console.log('   ⚠️ Recuerda que las credenciales de Google OAuth deben estar configuradas en el archivo .env');
   console.log('      Asegúrate de tener los siguientes valores configurados:');
-  console.log('      - ***REMOVED***=tu_client_id');
-  console.log('      - ***REMOVED***=tu_client_secret');
+  console.log('      - GOOGLE_CLIENT_ID=tu_client_id');
+  console.log('      - GOOGLE_CLIENT_SECRET=tu_client_secret');
   console.log('      - GOOGLE_REDIRECT_URI=http://localhost:3095/google-auth-callback');
   
   // 8. Resumen final

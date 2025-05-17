@@ -40,7 +40,7 @@ async function main() {
     if (!fs.existsSync(envPath)) {
       console.log('❌ No se encontró el archivo .env');
       console.log('Creando archivo .env con las credenciales...');
-      const envContent = `***REMOVED***=${googleClientId}\n***REMOVED***=${googleClientSecret}\nGOOGLE_REDIRECT_URI=http://localhost:3095/google-auth-callback\n`;
+      const envContent = `GOOGLE_CLIENT_ID=${googleClientId}\nGOOGLE_CLIENT_SECRET=${googleClientSecret}\nGOOGLE_REDIRECT_URI=http://localhost:3095/google-auth-callback\n`;
       fs.writeFileSync(envPath, envContent, 'utf8');
       console.log('✅ Archivo .env creado correctamente');
     } else {
@@ -55,11 +55,11 @@ async function main() {
       
       // Actualizar líneas existentes
       for (const line of lines) {
-        if (line.startsWith('***REMOVED***=')) {
-          updatedLines.push(`***REMOVED***=${googleClientId}`);
+        if (line.startsWith('GOOGLE_CLIENT_ID=')) {
+          updatedLines.push(`GOOGLE_CLIENT_ID=${googleClientId}`);
           clientIdUpdated = true;
-        } else if (line.startsWith('***REMOVED***=')) {
-          updatedLines.push(`***REMOVED***=${googleClientSecret}`);
+        } else if (line.startsWith('GOOGLE_CLIENT_SECRET=')) {
+          updatedLines.push(`GOOGLE_CLIENT_SECRET=${googleClientSecret}`);
           clientSecretUpdated = true;
         } else if (line.startsWith('GOOGLE_REDIRECT_URI=')) {
           updatedLines.push('GOOGLE_REDIRECT_URI=http://localhost:3095/google-auth-callback');
@@ -71,11 +71,11 @@ async function main() {
       
       // Añadir variables si no existen
       if (!clientIdUpdated) {
-        updatedLines.push(`***REMOVED***=${googleClientId}`);
+        updatedLines.push(`GOOGLE_CLIENT_ID=${googleClientId}`);
       }
       
       if (!clientSecretUpdated) {
-        updatedLines.push(`***REMOVED***=${googleClientSecret}`);
+        updatedLines.push(`GOOGLE_CLIENT_SECRET=${googleClientSecret}`);
       }
       
       if (!redirectUriExists) {

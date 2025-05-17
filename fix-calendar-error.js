@@ -96,8 +96,8 @@ async function diagnoseCalendarConfig() {
     
     // Verificar Google OAuth
     console.log('\nVerificando variables de entorno para Google OAuth:');
-    console.log(`- ***REMOVED***: ${process.env.***REMOVED*** ? 'Configurado' : 'NO CONFIGURADO'}`);
-    console.log(`- ***REMOVED***: ${process.env.***REMOVED*** ? 'Configurado' : 'NO CONFIGURADO'}`);
+    console.log(`- GOOGLE_CLIENT_ID: ${process.env.GOOGLE_CLIENT_ID ? 'Configurado' : 'NO CONFIGURADO'}`);
+    console.log(`- GOOGLE_CLIENT_SECRET: ${process.env.GOOGLE_CLIENT_SECRET ? 'Configurado' : 'NO CONFIGURADO'}`);
     console.log(`- GOOGLE_REDIRECT_URI: ${process.env.GOOGLE_REDIRECT_URI ? 'Configurado' : 'NO CONFIGURADO'}`);
     
   } catch (error) {

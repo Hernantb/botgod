@@ -48,7 +48,7 @@ Cuando se hace clic en el botón "Conectar Google Calendar", la aplicación redi
 Si aún encuentras problemas:
 
 1. Verifica los logs del servidor backend para asegurarte de que las solicitudes lleguen correctamente.
-2. Comprueba que las variables de entorno `***REMOVED***` y `***REMOVED***` estén configuradas con valores válidos.
+2. Comprueba que las variables de entorno `GOOGLE_CLIENT_ID` y `GOOGLE_CLIENT_SECRET` estén configuradas con valores válidos.
 3. Asegúrate de que la variable `GOOGLE_REDIRECT_URI` coincida exactamente con la URL configurada en la consola de Google Cloud.
 4. Si el problema persiste, reinicia tanto el servidor frontend como el backend.
 

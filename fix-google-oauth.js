@@ -38,12 +38,12 @@ async function updateGoogleOAuthCredentials() {
   // Preguntar por las credenciales de Google OAuth
   try {
     // Google Client ID
-    const clientId = await question('Ingresa el ***REMOVED***: ');
-    updateEnvVariable(envLines, '***REMOVED***', clientId);
+    const clientId = await question('Ingresa el GOOGLE_CLIENT_ID: ');
+    updateEnvVariable(envLines, 'GOOGLE_CLIENT_ID', clientId);
     
     // Google Client Secret
-    const clientSecret = await question('Ingresa el ***REMOVED***: ');
-    updateEnvVariable(envLines, '***REMOVED***', clientSecret);
+    const clientSecret = await question('Ingresa el GOOGLE_CLIENT_SECRET: ');
+    updateEnvVariable(envLines, 'GOOGLE_CLIENT_SECRET', clientSecret);
     
     // Google Redirect URI
     const redirectUriDefault = 'http://localhost:3095/google-auth-callback';

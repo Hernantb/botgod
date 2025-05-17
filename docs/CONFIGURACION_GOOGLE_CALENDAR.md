@@ -45,8 +45,8 @@ Este documento proporciona instrucciones detalladas para configurar correctament
 2. Actualiza o añade las siguientes variables:
 
 ```
-***REMOVED***=tu_id_de_cliente
-***REMOVED***=tu_secreto_de_cliente
+GOOGLE_CLIENT_ID=tu_id_de_cliente
+GOOGLE_CLIENT_SECRET=tu_secreto_de_cliente
 GOOGLE_REDIRECT_URI=http://localhost:3095/google-auth-callback
 ```
 

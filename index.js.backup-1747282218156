@@ -3076,8 +3076,8 @@ app.get('/api/google-auth', async (req, res) => {
     }
     
     // Verificar credenciales
-    const clientId = process.env.***REMOVED***;
-    const clientSecret = process.env.***REMOVED***;
+    const clientId = process.env.GOOGLE_CLIENT_ID;
+    const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
     const redirectUri = process.env.GOOGLE_REDIRECT_URI;
     
     if (!clientId || clientId === 'YOUR_CLIENT_ID' || 
@@ -3155,8 +3155,8 @@ app.get('/google-auth-callback', async (req, res) => {
     // Inicializar cliente OAuth
     const { google } = require('googleapis');
     const oauth2Client = new google.auth.OAuth2(
-      process.env.***REMOVED***,
-      process.env.***REMOVED***,
+      process.env.GOOGLE_CLIENT_ID,
+      process.env.GOOGLE_CLIENT_SECRET,
       process.env.GOOGLE_REDIRECT_URI
     );
     
@@ -3286,8 +3286,8 @@ app.get('/api/google-auth', async (req, res) => {
     }
     
     // Verificar credenciales
-    const clientId = process.env.***REMOVED***;
-    const clientSecret = process.env.***REMOVED***;
+    const clientId = process.env.GOOGLE_CLIENT_ID;
+    const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
     const redirectUri = process.env.GOOGLE_REDIRECT_URI;
     
     if (!clientId || clientId === 'YOUR_CLIENT_ID' || 
@@ -3365,8 +3365,8 @@ app.get('/google-auth-callback', async (req, res) => {
     // Inicializar cliente OAuth
     const { google } = require('googleapis');
     const oauth2Client = new google.auth.OAuth2(
-      process.env.***REMOVED***,
-      process.env.***REMOVED***,
+      process.env.GOOGLE_CLIENT_ID,
+      process.env.GOOGLE_CLIENT_SECRET,
       process.env.GOOGLE_REDIRECT_URI
     );
     
