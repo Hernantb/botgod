@@ -1,0 +1,151 @@
+// Función corregida para extraer datos del mensaje de la solicitud de webhook
+// Incluye soporte mejorado para mensajes de audio
+function extractMessageData(body) {
+  try {
+    console.log(`🔍 Extrayendo datos de mensaje de webhook: ${JSON.stringify(body).substring(0, 200)}...`);
+    logDebug(`🔍 Extrayendo datos de mensaje de webhook: ${JSON.stringify(body).substring(0, 200)}...`);
+    
+    // Valores por defecto
+    const result = {
+      isStatusUpdate: false,
+      sender: null,
+      message: null,
+      messageId: null,
+      timestamp: null,
+      isImage: false,  // Bandera para detectar si es una imagen
+      isAudio: false   // Bandera para detectar si es un audio
+    };
+    
+    // Imprimir la estructura completa para depuración
+    console.log('📝 Estructura completa del webhook:');
+    console.log(JSON.stringify(body, null, 2));
+    
+    // Verificar si es un mensaje o una actualización de estado
+    if (body && body.entry && body.entry.length > 0) {
+      const entry = body.entry[0];
+      
+      if (entry.changes && entry.changes.length > 0) {
+        const change = entry.changes[0];
+        
+        // Para mensajes entrantes normales
+        if (change.value && change.value.messages && change.value.messages.length > 0) {
+          const messageData = change.value.messages[0];
+          const contact = change.value.contacts && change.value.contacts.length > 0 
+            ? change.value.contacts[0] 
+            : null;
+          
+          result.sender = contact && contact.wa_id ? contact.wa_id : null;
+          result.messageId = messageData.id || null;
+          
+          console.log(`📨 Datos del mensaje: ${JSON.stringify(messageData)}`);
+          
+          // Comprobar si es una imagen
+          if (messageData.type === 'image' || messageData.image) {
+            console.log('🖼️ Mensaje de tipo imagen detectado');
+            result.isImage = true;
+            result.message = "[IMAGEN RECIBIDA]"; // Mensaje estándar para indicar que se recibió una imagen
+            result.imageData = messageData.image || null;
+          }
+          // Comprobar si es un audio
+          else if (messageData.type === 'audio' || messageData.audio) {
+            console.log('🔊 Mensaje de tipo audio detectado');
+            result.isAudio = true;
+            result.message = "[AUDIO RECIBIDO]"; // Mensaje estándar para indicar que se recibió un audio
+            result.audioData = messageData.audio || null;
+          }
+          // Extraer contenido según el tipo de mensaje (sólo si no es una imagen ni audio)
+          else if (messageData.text && messageData.text.body) {
+            result.message = messageData.text.body;
+            console.log(`💬 Mensaje de texto encontrado: "${result.message}"`);
+          } else if (messageData.type === 'text' && messageData.text) {
+            result.message = messageData.text.body;
+            console.log(`💬 Mensaje de texto (tipo): "${result.message}"`);
+          } else if (messageData.type === 'button' && messageData.button) {
+            result.message = messageData.button.text;
+            console.log(`🔘 Mensaje de botón: "${result.message}"`);
+          } else if (messageData.type === 'interactive' && messageData.interactive) {
+            // Manejar mensajes interactivos (botones, listas, etc.)
+            if (messageData.interactive.button_reply) {
+              result.message = messageData.interactive.button_reply.title;
+              console.log(`🔘 Respuesta interactiva (botón): "${result.message}"`);
+            } else if (messageData.interactive.list_reply) {
+              result.message = messageData.interactive.list_reply.title;
+              console.log(`📋 Respuesta interactiva (lista): "${result.message}"`);
+            }
+          }
+          
+          // Si no pudimos extraer el mensaje, intentar con la estructura completa
+          if (!result.message && !result.isImage && !result.isAudio && messageData) {
+            console.log('⚠️ No se pudo extraer mensaje con métodos conocidos, intentando alternativas...');
+            // Intentar extraer de cualquier propiedad que tenga "body" o "text"
+            if (messageData.body) {
+              result.message = messageData.body;
+              console.log(`🔄 Mensaje alternativo (body): "${result.message}"`);
+            } else {
+              // Buscar en todas las propiedades de primer nivel
+              for (const key in messageData) {
+                if (typeof messageData[key] === 'object' && messageData[key] !== null) {
+                  if (messageData[key].body) {
+                    result.message = messageData[key].body;
+                    console.log(`🔄 Mensaje alternativo (${key}.body): "${result.message}"`);
+                    break;
+                  } else if (messageData[key].text) {
+                    result.message = messageData[key].text;
+                    console.log(`🔄 Mensaje alternativo (${key}.text): "${result.message}"`);
+                    break;
+                  }
+                } else if (key === 'text' || key === 'body') {
+                  result.message = messageData[key];
+                  console.log(`🔄 Mensaje alternativo (${key}): "${result.message}"`);
+                  break;
+                }
+              }
+            }
+          }
+          
+          // Capturar timestamp si está disponible
+          result.timestamp = messageData.timestamp
+            ? new Date(parseInt(messageData.timestamp) * 1000) 
+            : new Date();
+          
+          console.log(`⏰ Timestamp: ${result.timestamp}`);
+        } 
+        // Para actualizaciones de estado de mensajes
+        else if (change.value && change.value.statuses && change.value.statuses.length > 0) {
+          result.isStatusUpdate = true;
+          const status = change.value.statuses[0];
+          result.messageId = status.id;
+          result.status = status.status;
+          result.timestamp = status.timestamp 
+            ? new Date(parseInt(status.timestamp) * 1000) 
+            : new Date();
+          result.recipient = status.recipient_id;
+          console.log(`📊 Actualización de estado: ${result.status} para mensaje ${result.messageId}`);
+        }
+      }
+    }
+    
+    // Verificar si pudimos extraer los datos necesarios
+    if (!result.isStatusUpdate && (!result.sender || (!result.message && !result.isImage && !result.isAudio))) {
+      console.log(`⚠️ No se pudieron extraer datos completos del mensaje: sender=${result.sender}, message=${result.message}, isImage=${result.isImage}, isAudio=${result.isAudio}`);
+      logDebug(`⚠️ No se pudieron extraer datos completos del mensaje: sender=${result.sender}, message=${result.message}`);
+    } else {
+      const contentType = result.isImage ? "imagen" : (result.isAudio ? "audio" : `mensaje "${result.message}"`);
+      console.log(`✅ Datos extraídos correctamente: ${result.isStatusUpdate ? 'actualización de estado' : `${contentType} de ${result.sender}`}`);
+      logDebug(`✅ Datos extraídos correctamente: ${result.isStatusUpdate ? 'actualización de estado' : `mensaje de ${result.sender}`}`);
+    }
+    
+    return result;
+  } catch (error) {
+    console.log(`❌ Error extrayendo datos del mensaje: ${error.message}`);
+    console.log(`❌ Stack: ${error.stack}`);
+    logDebug(`❌ Error extrayendo datos del mensaje: ${error.message}`);
+    return {
+      isStatusUpdate: false,
+      sender: null,
+      message: null,
+      messageId: null,
+      timestamp: new Date()
+    };
+  }
+} 

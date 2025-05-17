@@ -1,0 +1,70 @@
+🚀 Iniciando carga de configuraciones de negocios...
+🔄 Cargando configuraciones de negocios desde Supabase...
+📢 GLOBAL-PATCH: Verificando variables al inicio:
+- CONTROL_PANEL_URL: no definida
+- NODE_ENV: no definido
+- RENDER: no definido
+✅ node-fetch cargado exitosamente
+🔄 Inicializando cliente Supabase...
+✅ Cliente Supabase inicializado correctamente
+🔍 FIX-REAL-BOT: Estado de URL antes de procesar:
+- CONTROL_PANEL_URL: no definida
+- NODE_ENV: no definido
+- RENDER: no definido
+🔍 FIX-REAL-BOT: Usando selección de URL para entorno de desarrollo
+🌐 Ambiente de DESARROLLO detectado - Intentando URL local
+🔍 Verificando disponibilidad de servidor local en desarrollo: disponible
+🌐 Ambiente de DESARROLLO detectado - Intentando URL local
+🔍 Verificando disponibilidad de servidor local en desarrollo: disponible
+🔧 APLICANDO PARCHE PARA CORREGIR URLs DEL BOT WHATSAPP
+CONTROL_PANEL_URL actual: http://localhost:4001
+Ambiente: Desarrollo
+URL que se usará: http://localhost:4001
+📡 VERIFICACIÓN DE ACCESO A SUPABASE
+🔍 Intentando acceder a Supabase (https://wscijkxwevgxbgwhbqtm.supabase.co) con Axios...
+🔧 GLOBAL-PATCH: Estableciendo URL predeterminada: http://localhost:3000/api/register-bot-response
+📌 GLOBAL-PATCH: URL final: http://localhost:3000/api/register-bot-response
+🔧 PARCHE GLOBAL APLICADO
+✅ Función global.registerBotResponse definida
+ℹ️ Guardando mensajes en Supabase: https://wscijkxwevgxbgwhbqtm.supabase.co
+🔄 Configuración de Supabase:
+🔄 URL configurada: ❌ NO
+🔄 KEY configurada: ❌ NO
+📧 Configuración de notificaciones por correo:
+📧 Correo remitente: bexorai@gmail.com
+📧 Correo destinatario predeterminado: bexorai@gmail.com
+📧 Contraseña configurada: ❌ NO
+
+🔔 Módulo de notificaciones inicializado
+📧 Remitente: bexorai@gmail.com
+📧 Destinatario por defecto: bexorai@gmail.com
+🔑 Contraseña configurada: ❌ NO
+🔍 Modo diagnóstico: ACTIVADO
+📝 Frases predeterminadas: 4
+
+🧹 Caché de palabras clave limpiada para todos los negocios
+🔄 Inicializando configuraciones desde Supabase...
+🔄 Cargando configuraciones de negocios desde Supabase...
+🔧 APLICANDO PARCHE PARA CORREGIR URLs DEL BOT WHATSAPP
+Ambiente: Desarrollo
+Render detectado: NO
+CONTROL_PANEL_URL actual: http://localhost:3000/api/register-bot-response
+URL final que se usará: http://localhost:3000/api/register-bot-response
+✅ Parche aplicado correctamente
+📝 De ahora en adelante, las URLs duplicadas serán corregidas automáticamente
+🌐 En ambiente de producción, se usará: URL de desarrollo
+🔍 También puedes usar la función global registerBotResponse() para enviar mensajes
+🔑 API Keys cargadas:
+OPENAI_API_KEY: ❌ FALTA
+GUPSHUP_API_KEY: ❌ FALTA
+GUPSHUP_NUMBER: ❌ FALTA
+GUPSHUP_USERID: ❌ FALTA
+CONTROL_PANEL_URL: http://localhost:3000/api/register-bot-response
+📊 Estado de claves de API (variables de entorno):
+- OpenAI API Key: ❌ Falta
+- GupShup API Key: ❌ Falta
+- GupShup Number: ❌ Falta
+- GupShup User ID: ❌ Falta
+🔍 Se intentarán cargar claves desde Supabase...
+🔌 Cliente Supabase inicializado con URL: https://wscijkxwevgxbgwhbqtm.supabase.co
+🔑 Clave de Supabase configurada: ✅ (primeros caracteres: eyJhbGciOi...)

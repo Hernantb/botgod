@@ -1,0 +1,22 @@
+# Solución para los errores de integración de Google Calendar en el Frontend
+
+## Problema identificado
+Según los logs del frontend, hay múltiples errores 400 y 500 en las peticiones a:
+1. http://localhost:3005/api/calendar/status?id=2d385aa5-40e0-4ec9-9360-19281bc605e4
+2. http://localhost:3005/api/calendar/availability
+3. http://localhost:3005/api/calendar/auth
+
+Todos estos endpoints deben ser redirigidos al servidor de backend a través de ngrok.
+
+## Causa del problema
+- El frontend está usando rutas incorrectas o diferentes a las que expone el backend
+- El backend expone /api/business/:businessId/calendar-status mientras que el frontend está intentando usar /api/calendar/status
+- Las peticiones del frontend no están llegando correctamente al backend a través de ngrok
+
+## Solución completa
+
+### 1. Actualizar las rutas de API en el frontend
+
+El frontend debe modificar los siguientes archivos:
+
+#### api/calendar/status/route.ts

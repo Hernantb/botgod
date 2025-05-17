@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Bot Notification Tester</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+    
+    h1 {
+      color: #4a6cf7;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s;
+    }
+    
+    .tab.active {
+      border-bottom-color: #4a6cf7;
+      color: #4a6cf7;
+      font-weight: bold;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    
+    button {
+      background-color: #4a6cf7;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+    
+    button:hover {
+      background-color: #3a57d7;
+    }
+    
+    .result {
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      overflow-x: auto;
+    }
+    
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      overflow-x: auto;
+    }
+    
+    .status {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    
+    .status.success {
+      background-color: #e3f8e3;
+      color: #1a8a1a;
+    }
+    
+    .status.error {
+      background-color: #fae1e1;
+      color: #d32f2f;
+    }
+    
+    .notification-status {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 4px;
+      margin-top: 10px;
+    }
+    
+    .notification-yes {
+      background-color: #ffe0b2;
+      color: #e65100;
+    }
+    
+    .notification-no {
+      background-color: #e3f8e3;
+      color: #1a8a1a;
+    }
+    
+    .sample-messages {
+      margin-top: 10px;
+    }
+    
+    .sample-btn {
+      background-color: #f1f2f6;
+      color: #555;
+      border: 1px solid #ddd;
+      padding: 8px 12px;
+      margin: 5px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    
+    .sample-btn:hover {
+      background-color: #e3e4e8;
+    }
+    
+    .sample-btn.notification {
+      border-left: 3px solid #e65100;
+    }
+    
+    .sample-btn.regular {
+      border-left: 3px solid #1a8a1a;
+    }
+    
+    #loading {
+      display: none;
+      text-align: center;
+      margin: 20px 0;
+    }
+    
+    .spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      border-top: 4px solid #4a6cf7;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 10px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>WhatsApp Bot Notification Tester</h1>
+    
+    <div class="tabs">
+      <div class="tab active" data-tab="simple">Simple Test</div>
+      <div class="tab" data-tab="complete">Complete Flow</div>
+      <div class="tab" data-tab="metrics">Metrics Report</div>
+    </div>
+    
+    <div id="simple" class="tab-content active">
+      <h2>Test Notification Detection</h2>
+      <p>This will test if a message should trigger a notification without actually sending the email.</p>
+      
+      <div class="form-group">
+        <label for="simple-message">Message:</label>
+        <textarea id="simple-message" placeholder="Enter a message to test..."></textarea>
+      </div>
+      
+      <div class="sample-messages">
+        <p><strong>Sample Messages:</strong></p>
+        <button class="sample-btn notification" data-message="No puedo ayudarte con eso, necesitas hablar con un agente humano">No puedo ayudarte con eso</button>
+        <button class="sample-btn notification" data-message="Esto está fuera de mi alcance, requiere la intervención de un humano">Fuera de mi alcance</button>
+        <button class="sample-btn regular" data-message="Gracias por tu consulta, puedo ayudarte con eso">Puedo ayudarte</button>
+        <button class="sample-btn regular" data-message="¡Perfecto! Tu cita ha sido confirmada para mañana a las 10:00">Cita confirmada</button>
+      </div>
+      
+      <div class="form-group">
+        <label for="simple-source">Source:</label>
+        <select id="simple-source">
+          <option value="bot">Bot</option>
+          <option value="user">User</option>
+        </select>
+      </div>
+      
+      <button id="test-detection-btn">Test Detection</button>
+      
+      <div id="loading">
+        <div class="spinner"></div>
+        <p>Processing...</p>
+      </div>
+      
+      <div id="simple-result" class="result" style="display: none;">
+        <div class="result-header">
+          <h3>Result</h3>
+          <span id="simple-status" class="status">Pending</span>
+        </div>
+        <div id="simple-notification-status"></div>
+        <pre id="simple-json"></pre>
+      </div>
+    </div>
+    
+    <div id="complete" class="tab-content">
+      <h2>Test Complete Notification Flow</h2>
+      <p>This will simulate a complete message flow, including database integration and email sending.</p>
+      
+      <div class="form-group">
+        <label for="complete-message">Message:</label>
+        <textarea id="complete-message" placeholder="Enter a message to test..."></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label for="complete-phone">Phone Number:</label>
+        <input type="text" id="complete-phone" placeholder="e.g., 5512345678" value="5512345678">
+      </div>
+      
+      <div class="form-group">
+        <label for="complete-conversation">Conversation ID (optional):</label>
+        <input type="text" id="complete-conversation" placeholder="e.g., test-conversation-1">
+      </div>
+      
+      <div class="form-group">
+        <label for="save-db">
+          <input type="checkbox" id="save-db" checked> Save to database
+        </label>
+      </div>
+      
+      <div class="form-group">
+        <label for="check-notif">
+          <input type="checkbox" id="check-notif" checked> Check for notification requirement
+        </label>
+      </div>
+      
+      <div class="form-group">
+        <label for="trigger-bot">
+          <input type="checkbox" id="trigger-bot"> Force bot response to trigger notification
+        </label>
+      </div>
+      
+      <button id="test-complete-btn">Run Complete Test</button>
+      
+      <div id="complete-result" class="result" style="display: none;">
+        <div class="result-header">
+          <h3>Result</h3>
+          <span id="complete-status" class="status">Pending</span>
+        </div>
+        <pre id="complete-json"></pre>
+      </div>
+    </div>
+    
+    <div id="metrics" class="tab-content">
+      <h2>Generate Notification Metrics Report</h2>
+      <p>This will run a batch of tests and generate a metrics report on notification system performance.</p>
+      
+      <div class="form-group">
+        <label for="test-count">Number of Tests:</label>
+        <input type="number" id="test-count" min="1" max="100" value="10">
+      </div>
+      
+      <div class="form-group">
+        <label for="notify-ratio">Notification Ratio (0-1):</label>
+        <input type="number" id="notify-ratio" min="0" max="1" step="0.1" value="0.5">
+      </div>
+      
+      <div class="form-group">
+        <label for="detailed-logs">
+          <input type="checkbox" id="detailed-logs"> Show detailed logs
+        </label>
+      </div>
+      
+      <p><strong>Note:</strong> Running a metrics report may take some time depending on the number of tests.</p>
+      
+      <button id="run-metrics-btn">Generate Metrics Report</button>
+      
+      <div id="metrics-result" class="result" style="display: none;">
+        <div class="result-header">
+          <h3>Metrics Report</h3>
+          <span id="metrics-status" class="status">Pending</span>
+        </div>
+        <pre id="metrics-json"></pre>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Server configuration
+    const SERVER_URL = 'http://localhost:3095';
+    
+    // Tab switching
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        
+        tab.classList.add('active');
+        document.getElementById(tab.getAttribute('data-tab')).classList.add('active');
+      });
+    });
+    
+    // Sample message buttons
+    document.querySelectorAll('.sample-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('simple-message').value = btn.getAttribute('data-message');
+      });
+    });
+    
+    // Simple test
+    document.getElementById('test-detection-btn').addEventListener('click', async () => {
+      const message = document.getElementById('simple-message').value;
+      const source = document.getElementById('simple-source').value;
+      
+      if (!message) {
+        alert('Please enter a message to test');
+        return;
+      }
+      
+      showLoading(true);
+      document.getElementById('simple-result').style.display = 'none';
+      
+      try {
+        const response = await fetch(`${SERVER_URL}/test-notification?message=${encodeURIComponent(message)}&source=${source}`);
+        const data = await response.json();
+        
+        document.getElementById('simple-json').textContent = JSON.stringify(data, null, 2);
+        document.getElementById('simple-status').textContent = data.success ? 'Success' : 'Error';
+        document.getElementById('simple-status').className = data.success ? 'status success' : 'status error';
+        
+        // Display notification status
+        const notificationStatus = document.getElementById('simple-notification-status');
+        if (data.analysis && data.analysis.requiresNotification) {
+          notificationStatus.innerHTML = `<div class="notification-status notification-yes">This message would trigger a notification</div>`;
+          if (data.analysis.matches && data.analysis.matches.length) {
+            notificationStatus.innerHTML += `<p>Matching phrases: ${data.analysis.matches.join(', ')}</p>`;
+          }
+        } else {
+          notificationStatus.innerHTML = `<div class="notification-status notification-no">This message would NOT trigger a notification</div>`;
+        }
+        
+        document.getElementById('simple-result').style.display = 'block';
+      } catch (error) {
+        document.getElementById('simple-json').textContent = `Error: ${error.message}`;
+        document.getElementById('simple-status').textContent = 'Error';
+        document.getElementById('simple-status').className = 'status error';
+        document.getElementById('simple-result').style.display = 'block';
+      } finally {
+        showLoading(false);
+      }
+    });
+    
+    // Complete flow test
+    document.getElementById('test-complete-btn').addEventListener('click', async () => {
+      const message = document.getElementById('complete-message').value;
+      const phoneNumber = document.getElementById('complete-phone').value;
+      const conversationId = document.getElementById('complete-conversation').value;
+      const saveToDatabase = document.getElementById('save-db').checked;
+      const checkNotification = document.getElementById('check-notif').checked;
+      const triggerBotNotification = document.getElementById('trigger-bot').checked;
+      
+      if (!message || !phoneNumber) {
+        alert('Please enter a message and phone number');
+        return;
+      }
+      
+      showLoading(true);
+      document.getElementById('complete-result').style.display = 'none';
+      
+      try {
+        const response = await fetch(`${SERVER_URL}/test-complete-flow`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message,
+            phoneNumber,
+            conversationId: conversationId || undefined,
+            saveToDatabase,
+            checkNotification,
+            triggerBotNotification
+          })
+        });
+        
+        const data = await response.json();
+        
+        document.getElementById('complete-json').textContent = JSON.stringify(data, null, 2);
+        document.getElementById('complete-status').textContent = data.success ? 'Success' : 'Error';
+        document.getElementById('complete-status').className = data.success ? 'status success' : 'status error';
+        document.getElementById('complete-result').style.display = 'block';
+      } catch (error) {
+        document.getElementById('complete-json').textContent = `Error: ${error.message}`;
+        document.getElementById('complete-status').textContent = 'Error';
+        document.getElementById('complete-status').className = 'status error';
+        document.getElementById('complete-result').style.display = 'block';
+      } finally {
+        showLoading(false);
+      }
+    });
+    
+    // Run metrics test
+    document.getElementById('run-metrics-btn').addEventListener('click', async () => {
+      const testCount = document.getElementById('test-count').value;
+      const notifyRatio = document.getElementById('notify-ratio').value;
+      const detailedLogs = document.getElementById('detailed-logs').checked;
+      
+      showLoading(true);
+      document.getElementById('metrics-result').style.display = 'none';
+      
+      try {
+        // In a real implementation, this would call the server endpoint
+        // For now, show a message that this would run the test-notification-metrics.js script
+        document.getElementById('metrics-json').textContent = `
+This would run the test-notification-metrics.js script with the following parameters:
+
+node test-notification-metrics.js --count=${testCount} --notify-ratio=${notifyRatio} --detailed=${detailedLogs}
+
+In a production environment, this would trigger a server-side process to run the tests and 
+return a metrics report. For security reasons, this feature is only available when running
+the script directly on the server.
+
+To run the metrics test manually:
+1. SSH into the server
+2. Navigate to the WhatsApp bot directory
+3. Run the command above
+4. View the generated report in the test-reports directory
+`;
+        
+        document.getElementById('metrics-status').textContent = 'Info';
+        document.getElementById('metrics-status').className = 'status success';
+        document.getElementById('metrics-result').style.display = 'block';
+      } catch (error) {
+        document.getElementById('metrics-json').textContent = `Error: ${error.message}`;
+        document.getElementById('metrics-status').textContent = 'Error';
+        document.getElementById('metrics-status').className = 'status error';
+        document.getElementById('metrics-result').style.display = 'block';
+      } finally {
+        showLoading(false);
+      }
+    });
+    
+    // Helper function to show/hide loading indicator
+    function showLoading(show) {
+      document.getElementById('loading').style.display = show ? 'block' : 'none';
+    }
+    
+    // Check server connectivity on page load
+    async function checkServerStatus() {
+      try {
+        const response = await fetch(`${SERVER_URL}/status`);
+        const data = await response.json();
+        console.log('Server status:', data);
+      } catch (error) {
+        console.error('Server connection error:', error);
+        alert(`Could not connect to the test server at ${SERVER_URL}. Make sure the server is running.`);
+      }
+    }
+    
+    // Run server check when the page loads
+    window.addEventListener('load', checkServerStatus);
+  </script>
+</body>
+</html> 
