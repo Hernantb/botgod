@@ -1,0 +1,405 @@
+📢 GLOBAL-PATCH: Verificando variables al inicio:
+- CONTROL_PANEL_URL: no definida
+- NODE_ENV: no definido
+- RENDER: no definido
+✅ Usando SUPABASE_URL desde variable de entorno
+✅ Usando SUPABASE_KEY desde variable de entorno
+✅ Usando BUSINESS_ID desde variable de entorno
+✅ node-fetch cargado exitosamente
+🔄 Inicializando cliente Supabase...
+✅ Cliente Supabase inicializado correctamente
+🔍 FIX-REAL-BOT: Estado de URL antes de procesar:
+- CONTROL_PANEL_URL: no definida
+- NODE_ENV: no definido
+- RENDER: no definido
+🔍 FIX-REAL-BOT: Usando selección de URL para entorno de desarrollo
+🌐 Ambiente de DESARROLLO detectado - Intentando URL local
+🔍 Verificando disponibilidad de servidor local en desarrollo: disponible
+🌐 Ambiente de DESARROLLO detectado - Intentando URL local
+🔍 Verificando disponibilidad de servidor local en desarrollo: disponible
+🔧 APLICANDO PARCHE PARA CORREGIR URLs DEL BOT WHATSAPP
+CONTROL_PANEL_URL actual: http://localhost:4001
+Ambiente: Desarrollo
+URL que se usará: http://localhost:4001
+📡 VERIFICACIÓN DE ACCESO A SUPABASE
+🔍 Intentando acceder a Supabase (https://wscijkxwevgxbgwhbqtm.supabase.co) con Axios...
+🔧 GLOBAL-PATCH: Estableciendo URL predeterminada: http://localhost:3000/api/register-bot-response
+📌 GLOBAL-PATCH: URL final: http://localhost:3000/api/register-bot-response
+🔧 PARCHE GLOBAL APLICADO
+✅ Función global.registerBotResponse definida
+ℹ️ Guardando mensajes en Supabase: https://wscijkxwevgxbgwhbqtm.supabase.co
+📧 Configuración de notificaciones por correo:
+📧 Correo remitente: bexorai@gmail.com
+📧 Correo destinatario predeterminado: bexorai@gmail.com
+📧 Contraseña configurada: ❌ NO
+
+🔔 Módulo de notificaciones inicializado
+📧 Remitente: bexorai@gmail.com
+📧 Destinatario por defecto: bexorai@gmail.com
+🔑 Contraseña configurada: ❌ NO
+🔍 Modo diagnóstico: ACTIVADO
+📝 Frases predeterminadas: 4
+
+🧹 Caché de palabras clave limpiada para todos los negocios
+🔧 APLICANDO PARCHE PARA CORREGIR URLs DEL BOT WHATSAPP
+Ambiente: Desarrollo
+Render detectado: NO
+CONTROL_PANEL_URL actual: http://localhost:3000/api/register-bot-response
+URL final que se usará: http://localhost:3000/api/register-bot-response
+✅ Parche aplicado correctamente
+📝 De ahora en adelante, las URLs duplicadas serán corregidas automáticamente
+🌐 En ambiente de producción, se usará: URL de desarrollo
+🔍 También puedes usar la función global registerBotResponse() para enviar mensajes
+🔑 API Keys cargadas:
+OPENAI_API_KEY: ✅ OK
+GUPSHUP_API_KEY: ✅ OK
+GUPSHUP_NUMBER: ✅ OK
+GUPSHUP_USERID: ✅ OK
+CONTROL_PANEL_URL: http://localhost:3000/api/register-bot-response
+🔑 DEBUG - Variables de entorno para Supabase:
+- SUPABASE_URL: https://wscijkxwevgxbgwhbqtm.supabase.co
+- SUPABASE_ANON_KEY: no definido
+- SUPABASE_KEY: eyJhbGciOi...
+- NEXT_PUBLIC_SUPABASE_ANON_KEY: no definido
+✅ Credenciales de Supabase encontradas correctamente
+🔑 Usando clave de Supabase (primeros 10 caracteres): eyJhbGciOi...
+🚀 Servidor iniciado en puerto 3095
+🤖 Bot conectado al panel: http://localhost:3000/api/register-bot-response
+🔍 Verificando credenciales de integración...
+✅ Credenciales de GupShup presentes:
+  - API Key: sk_f0dde...
+  - Número de origen: 15557033313
+  - User ID: crxty1qf...
+✅ Clave API de OpenAI configurada: sk-proj-...
+🔄 Verificando conexión con Supabase...
+✅ SUPABASE ACCESIBLE VIA AXIOS: 200
+✅ CONTENIDO DE RESPUESTA: [{"id":"0d86311f-0932-4032-ad31-9f4e520af131","user_id":"5212213647963","business_id":"2d385aa5-40e0...
+🔍 Intentando acceder a Supabase (https://wscijkxwevgxbgwhbqtm.supabase.co) con Fetch nativo...
+✅ Conexión a Supabase verificada correctamente
+🔄 Inicializando mapeos y estados...
+🔄 Actualizando mapeos de conversaciones y números...
+✅ SUPABASE ACCESIBLE VIA FETCH NATIVO: 200
+✅ CONTENIDO DE RESPUESTA: [{"id":"0d86311f-0932-4032-ad31-9f4e520af131","user_id":"5212213647963","business_id":"2d385aa5-40e0...
+🔍 Encontradas 21 conversaciones para mapeo
+✅ Mapeos actualizados: 12 números mapeados
+📧 Verificando módulo de notificaciones...
+✅ Módulo de notificaciones cargado correctamente
+📝 Frases que generan notificaciones:
+🔍 Analizando mensaje para notificación: "¡perfecto! tu cita ha sido confirmada para mañana..."
+🏢 Business ID: No disponible
+⚠️ Sin businessId, usando palabras clave predeterminadas: ¡Perfecto! tu cita ha sido confirmada para, ¡Perfecto! un asesor te llamará, ¡Perfecto! un asesor te contactará, ¡Perfecto! una persona te contactará
+🔎 Verificando si el mensaje contiene: "¡perfecto! tu cita ha sido confirmada para"
+✅ COINCIDENCIA ENCONTRADA: "¡perfecto! tu cita ha sido confirmada para" en "¡perfecto! tu cita ha sido confirmada para mañana..."
+  - "¡Perfecto! tu cita ha sido confirmada para mañana": ✅ Notifica
+🔍 Analizando mensaje para notificación: "te llamará un asesor..."
+🏢 Business ID: No disponible
+⚠️ Sin businessId, usando palabras clave predeterminadas: ¡Perfecto! tu cita ha sido confirmada para, ¡Perfecto! un asesor te llamará, ¡Perfecto! un asesor te contactará, ¡Perfecto! una persona te contactará
+🔎 Verificando si el mensaje contiene: "¡perfecto! tu cita ha sido confirmada para"
+🔎 Verificando si el mensaje contiene: "¡perfecto! un asesor te llamará"
+🔎 Verificando si el mensaje contiene: "¡perfecto! un asesor te contactará"
+🔎 Verificando si el mensaje contiene: "¡perfecto! una persona te contactará"
+❌ No se encontraron coincidencias de palabras clave en el mensaje
+  - "Te llamará un asesor": ✅ Notifica
+🔍 Analizando mensaje para notificación: "una persona te contactará..."
+🏢 Business ID: No disponible
+⚠️ Sin businessId, usando palabras clave predeterminadas: ¡Perfecto! tu cita ha sido confirmada para, ¡Perfecto! un asesor te llamará, ¡Perfecto! un asesor te contactará, ¡Perfecto! una persona te contactará
+🔎 Verificando si el mensaje contiene: "¡perfecto! tu cita ha sido confirmada para"
+🔎 Verificando si el mensaje contiene: "¡perfecto! un asesor te llamará"
+🔎 Verificando si el mensaje contiene: "¡perfecto! un asesor te contactará"
+🔎 Verificando si el mensaje contiene: "¡perfecto! una persona te contactará"
+❌ No se encontraron coincidencias de palabras clave en el mensaje
+  - "Una persona te contactará": ✅ Notifica
+🤖 Bot WhatsApp listo y funcionando
+📥 GET /api/business/config
+📥 GET /api/openai/assistant-details?business_id=2d385aa5-40e0-4ec9-9360-19281bc605e4
+📥 GET /api/business/config
+📥 GET /api/openai/assistant-details?business_id=2d385aa5-40e0-4ec9-9360-19281bc605e4
+📥 GET /api/business/config
+📥 GET /api/openai/assistant-details?business_id=2d385aa5-40e0-4ec9-9360-19281bc605e4
+📥 GET /api/business/config
+📥 GET /api/openai/assistant-details?business_id=2d385aa5-40e0-4ec9-9360-19281bc605e4
+📢 GLOBAL-PATCH: Verificando variables al inicio:
+- CONTROL_PANEL_URL: no definida
+- NODE_ENV: no definido
+- RENDER: no definido
+✅ Usando SUPABASE_URL desde variable de entorno
+✅ Usando SUPABASE_KEY desde variable de entorno
+✅ Usando BUSINESS_ID desde variable de entorno
+✅ node-fetch cargado exitosamente
+🔄 Inicializando cliente Supabase...
+✅ Cliente Supabase inicializado correctamente
+🔍 FIX-REAL-BOT: Estado de URL antes de procesar:
+- CONTROL_PANEL_URL: no definida
+- NODE_ENV: no definido
+- RENDER: no definido
+🔍 FIX-REAL-BOT: Usando selección de URL para entorno de desarrollo
+🌐 Ambiente de DESARROLLO detectado - Intentando URL local
+🔍 Verificando disponibilidad de servidor local en desarrollo: disponible
+🌐 Ambiente de DESARROLLO detectado - Intentando URL local
+🔍 Verificando disponibilidad de servidor local en desarrollo: disponible
+🔧 APLICANDO PARCHE PARA CORREGIR URLs DEL BOT WHATSAPP
+CONTROL_PANEL_URL actual: http://localhost:4001
+Ambiente: Desarrollo
+URL que se usará: http://localhost:4001
+📡 VERIFICACIÓN DE ACCESO A SUPABASE
+🔍 Intentando acceder a Supabase (https://wscijkxwevgxbgwhbqtm.supabase.co) con Axios...
+🔧 GLOBAL-PATCH: Estableciendo URL predeterminada: http://localhost:3000/api/register-bot-response
+📌 GLOBAL-PATCH: URL final: http://localhost:3000/api/register-bot-response
+🔧 PARCHE GLOBAL APLICADO
+✅ Función global.registerBotResponse definida
+ℹ️ Guardando mensajes en Supabase: https://wscijkxwevgxbgwhbqtm.supabase.co
+📧 Configuración de notificaciones por correo:
+📧 Correo remitente: bexorai@gmail.com
+📧 Correo destinatario predeterminado: bexorai@gmail.com
+📧 Contraseña configurada: ❌ NO
+
+🔔 Módulo de notificaciones inicializado
+📧 Remitente: bexorai@gmail.com
+📧 Destinatario por defecto: bexorai@gmail.com
+🔑 Contraseña configurada: ❌ NO
+🔍 Modo diagnóstico: ACTIVADO
+📝 Frases predeterminadas: 4
+
+🧹 Caché de palabras clave limpiada para todos los negocios
+🔧 APLICANDO PARCHE PARA CORREGIR URLs DEL BOT WHATSAPP
+Ambiente: Desarrollo
+Render detectado: NO
+CONTROL_PANEL_URL actual: http://localhost:3000/api/register-bot-response
+URL final que se usará: http://localhost:3000/api/register-bot-response
+✅ Parche aplicado correctamente
+📝 De ahora en adelante, las URLs duplicadas serán corregidas automáticamente
+🌐 En ambiente de producción, se usará: URL de desarrollo
+🔍 También puedes usar la función global registerBotResponse() para enviar mensajes
+🔑 API Keys cargadas:
+OPENAI_API_KEY: ✅ OK
+GUPSHUP_API_KEY: ✅ OK
+GUPSHUP_NUMBER: ✅ OK
+GUPSHUP_USERID: ✅ OK
+CONTROL_PANEL_URL: http://localhost:3000/api/register-bot-response
+🔑 DEBUG - Variables de entorno para Supabase:
+- SUPABASE_URL: https://wscijkxwevgxbgwhbqtm.supabase.co
+- SUPABASE_ANON_KEY: no definido
+- SUPABASE_KEY: eyJhbGciOi...
+- NEXT_PUBLIC_SUPABASE_ANON_KEY: no definido
+✅ Credenciales de Supabase encontradas correctamente
+🔑 Usando clave de Supabase (primeros 10 caracteres): eyJhbGciOi...
+🚀 Servidor iniciado en puerto 3095
+🤖 Bot conectado al panel: http://localhost:3000/api/register-bot-response
+🔍 Verificando credenciales de integración...
+✅ Credenciales de GupShup presentes:
+  - API Key: sk_f0dde...
+  - Número de origen: 15557033313
+  - User ID: crxty1qf...
+✅ Clave API de OpenAI configurada: sk-proj-...
+🔄 Verificando conexión con Supabase...
+✅ Conexión a Supabase verificada correctamente
+🔄 Inicializando mapeos y estados...
+🔄 Actualizando mapeos de conversaciones y números...
+🔍 Encontradas 21 conversaciones para mapeo
+✅ Mapeos actualizados: 12 números mapeados
+📧 Verificando módulo de notificaciones...
+✅ Módulo de notificaciones cargado correctamente
+📝 Frases que generan notificaciones:
+🔍 Analizando mensaje para notificación: "¡perfecto! tu cita ha sido confirmada para mañana..."
+🏢 Business ID: No disponible
+⚠️ Sin businessId, usando palabras clave predeterminadas: ¡Perfecto! tu cita ha sido confirmada para, ¡Perfecto! un asesor te llamará, ¡Perfecto! un asesor te contactará, ¡Perfecto! una persona te contactará
+🔎 Verificando si el mensaje contiene: "¡perfecto! tu cita ha sido confirmada para"
+✅ COINCIDENCIA ENCONTRADA: "¡perfecto! tu cita ha sido confirmada para" en "¡perfecto! tu cita ha sido confirmada para mañana..."
+  - "¡Perfecto! tu cita ha sido confirmada para mañana": ✅ Notifica
+🔍 Analizando mensaje para notificación: "te llamará un asesor..."
+🏢 Business ID: No disponible
+⚠️ Sin businessId, usando palabras clave predeterminadas: ¡Perfecto! tu cita ha sido confirmada para, ¡Perfecto! un asesor te llamará, ¡Perfecto! un asesor te contactará, ¡Perfecto! una persona te contactará
+🔎 Verificando si el mensaje contiene: "¡perfecto! tu cita ha sido confirmada para"
+🔎 Verificando si el mensaje contiene: "¡perfecto! un asesor te llamará"
+🔎 Verificando si el mensaje contiene: "¡perfecto! un asesor te contactará"
+🔎 Verificando si el mensaje contiene: "¡perfecto! una persona te contactará"
+❌ No se encontraron coincidencias de palabras clave en el mensaje
+  - "Te llamará un asesor": ✅ Notifica
+🔍 Analizando mensaje para notificación: "una persona te contactará..."
+🏢 Business ID: No disponible
+⚠️ Sin businessId, usando palabras clave predeterminadas: ¡Perfecto! tu cita ha sido confirmada para, ¡Perfecto! un asesor te llamará, ¡Perfecto! un asesor te contactará, ¡Perfecto! una persona te contactará
+🔎 Verificando si el mensaje contiene: "¡perfecto! tu cita ha sido confirmada para"
+🔎 Verificando si el mensaje contiene: "¡perfecto! un asesor te llamará"
+🔎 Verificando si el mensaje contiene: "¡perfecto! un asesor te contactará"
+🔎 Verificando si el mensaje contiene: "¡perfecto! una persona te contactará"
+❌ No se encontraron coincidencias de palabras clave en el mensaje
+  - "Una persona te contactará": ✅ Notifica
+🤖 Bot WhatsApp listo y funcionando
+✅ SUPABASE ACCESIBLE VIA AXIOS: 200
+✅ CONTENIDO DE RESPUESTA: [{"id":"0d86311f-0932-4032-ad31-9f4e520af131","user_id":"5212213647963","business_id":"2d385aa5-40e0...
+🔍 Intentando acceder a Supabase (https://wscijkxwevgxbgwhbqtm.supabase.co) con Fetch nativo...
+✅ SUPABASE ACCESIBLE VIA FETCH NATIVO: 200
+✅ CONTENIDO DE RESPUESTA: [{"id":"0d86311f-0932-4032-ad31-9f4e520af131","user_id":"5212213647963","business_id":"2d385aa5-40e0...
+📥 GET /api/business/config
+📥 GET /api/openai/assistant-details?business_id=2d385aa5-40e0-4ec9-9360-19281bc605e4
+📥 GET /
+📥 GET /api/business/config
+📥 GET /api/openai/assistant-details?business_id=2d385aa5-40e0-4ec9-9360-19281bc605e4
+📥 GET /api/business/config
+📥 GET /api/openai/assistant-details?business_id=2d385aa5-40e0-4ec9-9360-19281bc605e4
+📥 GET /api/business/config
+📥 GET /api/openai/assistant-details?business_id=2d385aa5-40e0-4ec9-9360-19281bc605e4
+📥 GET /api/business/config
+📥 GET /api/business/config
+📥 GET /api/openai/assistant-details?business_id=2d385aa5-40e0-4ec9-9360-19281bc605e4
+📥 GET /api/openai/assistant-details?business_id=2d385aa5-40e0-4ec9-9360-19281bc605e4
+📢 GLOBAL-PATCH: Verificando variables al inicio:
+- CONTROL_PANEL_URL: no definida
+- NODE_ENV: no definido
+- RENDER: no definido
+✅ Usando SUPABASE_URL desde variable de entorno
+✅ Usando SUPABASE_KEY desde variable de entorno
+✅ Usando BUSINESS_ID desde variable de entorno
+✅ node-fetch cargado exitosamente
+🔄 Inicializando cliente Supabase...
+✅ Cliente Supabase inicializado correctamente
+🔍 FIX-REAL-BOT: Estado de URL antes de procesar:
+- CONTROL_PANEL_URL: no definida
+- NODE_ENV: no definido
+- RENDER: no definido
+🔍 FIX-REAL-BOT: Usando selección de URL para entorno de desarrollo
+🌐 Ambiente de DESARROLLO detectado - Intentando URL local
+🔍 Verificando disponibilidad de servidor local en desarrollo: disponible
+🌐 Ambiente de DESARROLLO detectado - Intentando URL local
+🔍 Verificando disponibilidad de servidor local en desarrollo: disponible
+🔧 APLICANDO PARCHE PARA CORREGIR URLs DEL BOT WHATSAPP
+CONTROL_PANEL_URL actual: http://localhost:4001
+Ambiente: Desarrollo
+URL que se usará: http://localhost:4001
+📡 VERIFICACIÓN DE ACCESO A SUPABASE
+🔍 Intentando acceder a Supabase (https://wscijkxwevgxbgwhbqtm.supabase.co) con Axios...
+🔧 GLOBAL-PATCH: Estableciendo URL predeterminada: http://localhost:3000/api/register-bot-response
+📌 GLOBAL-PATCH: URL final: http://localhost:3000/api/register-bot-response
+🔧 PARCHE GLOBAL APLICADO
+✅ Función global.registerBotResponse definida
+ℹ️ Guardando mensajes en Supabase: https://wscijkxwevgxbgwhbqtm.supabase.co
+📧 Configuración de notificaciones por correo:
+📧 Correo remitente: bexorai@gmail.com
+📧 Correo destinatario predeterminado: bexorai@gmail.com
+📧 Contraseña configurada: ❌ NO
+
+🔔 Módulo de notificaciones inicializado
+📧 Remitente: bexorai@gmail.com
+📧 Destinatario por defecto: bexorai@gmail.com
+🔑 Contraseña configurada: ❌ NO
+🔍 Modo diagnóstico: ACTIVADO
+📝 Frases predeterminadas: 4
+
+🧹 Caché de palabras clave limpiada para todos los negocios
+🔧 APLICANDO PARCHE PARA CORREGIR URLs DEL BOT WHATSAPP
+Ambiente: Desarrollo
+Render detectado: NO
+CONTROL_PANEL_URL actual: http://localhost:3000/api/register-bot-response
+URL final que se usará: http://localhost:3000/api/register-bot-response
+✅ Parche aplicado correctamente
+📝 De ahora en adelante, las URLs duplicadas serán corregidas automáticamente
+🌐 En ambiente de producción, se usará: URL de desarrollo
+🔍 También puedes usar la función global registerBotResponse() para enviar mensajes
+🔑 API Keys cargadas:
+OPENAI_API_KEY: ✅ OK
+GUPSHUP_API_KEY: ✅ OK
+GUPSHUP_NUMBER: ✅ OK
+GUPSHUP_USERID: ✅ OK
+CONTROL_PANEL_URL: http://localhost:3000/api/register-bot-response
+🔑 DEBUG - Variables de entorno para Supabase:
+- SUPABASE_URL: https://wscijkxwevgxbgwhbqtm.supabase.co
+- SUPABASE_ANON_KEY: no definido
+- SUPABASE_KEY: eyJhbGciOi...
+- NEXT_PUBLIC_SUPABASE_ANON_KEY: no definido
+✅ Credenciales de Supabase encontradas correctamente
+🔑 Usando clave de Supabase (primeros 10 caracteres): eyJhbGciOi...
+🚀 Servidor iniciado en puerto 3095
+🤖 Bot conectado al panel: http://localhost:3000/api/register-bot-response
+🔍 Verificando credenciales de integración...
+✅ Credenciales de GupShup presentes:
+  - API Key: sk_f0dde...
+  - Número de origen: 15557033313
+  - User ID: crxty1qf...
+✅ Clave API de OpenAI configurada: sk-proj-...
+🔄 Verificando conexión con Supabase...
+✅ Conexión a Supabase verificada correctamente
+🔄 Inicializando mapeos y estados...
+🔄 Actualizando mapeos de conversaciones y números...
+✅ SUPABASE ACCESIBLE VIA AXIOS: 200
+✅ CONTENIDO DE RESPUESTA: [{"id":"0d86311f-0932-4032-ad31-9f4e520af131","user_id":"5212213647963","business_id":"2d385aa5-40e0...
+🔍 Intentando acceder a Supabase (https://wscijkxwevgxbgwhbqtm.supabase.co) con Fetch nativo...
+🔍 Encontradas 21 conversaciones para mapeo
+✅ Mapeos actualizados: 12 números mapeados
+📧 Verificando módulo de notificaciones...
+✅ Módulo de notificaciones cargado correctamente
+📝 Frases que generan notificaciones:
+🔍 Analizando mensaje para notificación: "¡perfecto! tu cita ha sido confirmada para mañana..."
+🏢 Business ID: No disponible
+⚠️ Sin businessId, usando palabras clave predeterminadas: ¡Perfecto! tu cita ha sido confirmada para, ¡Perfecto! un asesor te llamará, ¡Perfecto! un asesor te contactará, ¡Perfecto! una persona te contactará
+🔎 Verificando si el mensaje contiene: "¡perfecto! tu cita ha sido confirmada para"
+✅ COINCIDENCIA ENCONTRADA: "¡perfecto! tu cita ha sido confirmada para" en "¡perfecto! tu cita ha sido confirmada para mañana..."
+  - "¡Perfecto! tu cita ha sido confirmada para mañana": ✅ Notifica
+🔍 Analizando mensaje para notificación: "te llamará un asesor..."
+🏢 Business ID: No disponible
+⚠️ Sin businessId, usando palabras clave predeterminadas: ¡Perfecto! tu cita ha sido confirmada para, ¡Perfecto! un asesor te llamará, ¡Perfecto! un asesor te contactará, ¡Perfecto! una persona te contactará
+🔎 Verificando si el mensaje contiene: "¡perfecto! tu cita ha sido confirmada para"
+🔎 Verificando si el mensaje contiene: "¡perfecto! un asesor te llamará"
+🔎 Verificando si el mensaje contiene: "¡perfecto! un asesor te contactará"
+🔎 Verificando si el mensaje contiene: "¡perfecto! una persona te contactará"
+❌ No se encontraron coincidencias de palabras clave en el mensaje
+  - "Te llamará un asesor": ✅ Notifica
+🔍 Analizando mensaje para notificación: "una persona te contactará..."
+🏢 Business ID: No disponible
+⚠️ Sin businessId, usando palabras clave predeterminadas: ¡Perfecto! tu cita ha sido confirmada para, ¡Perfecto! un asesor te llamará, ¡Perfecto! un asesor te contactará, ¡Perfecto! una persona te contactará
+🔎 Verificando si el mensaje contiene: "¡perfecto! tu cita ha sido confirmada para"
+🔎 Verificando si el mensaje contiene: "¡perfecto! un asesor te llamará"
+🔎 Verificando si el mensaje contiene: "¡perfecto! un asesor te contactará"
+🔎 Verificando si el mensaje contiene: "¡perfecto! una persona te contactará"
+❌ No se encontraron coincidencias de palabras clave en el mensaje
+  - "Una persona te contactará": ✅ Notifica
+🤖 Bot WhatsApp listo y funcionando
+✅ SUPABASE ACCESIBLE VIA FETCH NATIVO: 200
+✅ CONTENIDO DE RESPUESTA: [{"id":"0d86311f-0932-4032-ad31-9f4e520af131","user_id":"5212213647963","business_id":"2d385aa5-40e0...
+📥 GET /api/business/config
+🔍 GET business/config - Fuentes de business_id:
+  - Query param: no disponible
+  - Headers: no disponible
+  - Body: no disponible
+  - Auth Header: no disponible
+  - Default: 2d385aa5-40e0-4ec9-9360-19281bc605e4
+  - ID final usado: 2d385aa5-40e0-4ec9-9360-19281bc605e4
+ℹ️ No se encontró configuración, usando valores por defecto
+📥 GET /api/openai/assistant-details?business_id=2d385aa5-40e0-4ec9-9360-19281bc605e4
+🔍 Obteniendo detalles del asistente OpenAI para negocio: 2d385aa5-40e0-4ec9-9360-19281bc605e4
+ℹ️ La tabla openai_assistants no existe, usando configuración por defecto
+📥 GET /api/business/config
+🔍 GET business/config - Fuentes de business_id:
+  - Query param: no disponible
+  - Headers: no disponible
+  - Body: no disponible
+  - Auth Header: no disponible
+  - Default: 2d385aa5-40e0-4ec9-9360-19281bc605e4
+  - ID final usado: 2d385aa5-40e0-4ec9-9360-19281bc605e4
+ℹ️ No se encontró configuración, usando valores por defecto
+📥 GET /api/openai/assistant-details?business_id=2d385aa5-40e0-4ec9-9360-19281bc605e4
+🔍 Obteniendo detalles del asistente OpenAI para negocio: 2d385aa5-40e0-4ec9-9360-19281bc605e4
+ℹ️ La tabla openai_assistants no existe, usando configuración por defecto
+📥 GET /api/business/config
+🔍 GET business/config - Fuentes de business_id:
+  - Query param: no disponible
+  - Headers: no disponible
+  - Body: no disponible
+  - Auth Header: no disponible
+  - Default: 2d385aa5-40e0-4ec9-9360-19281bc605e4
+  - ID final usado: 2d385aa5-40e0-4ec9-9360-19281bc605e4
+ℹ️ No se encontró configuración, usando valores por defecto
+📥 GET /api/openai/assistant-details?business_id=2d385aa5-40e0-4ec9-9360-19281bc605e4
+🔍 Obteniendo detalles del asistente OpenAI para negocio: 2d385aa5-40e0-4ec9-9360-19281bc605e4
+ℹ️ La tabla openai_assistants no existe, usando configuración por defecto
+📥 GET /api/business/config
+🔍 GET business/config - Fuentes de business_id:
+  - Query param: no disponible
+  - Headers: no disponible
+  - Body: no disponible
+  - Auth Header: no disponible
+  - Default: 2d385aa5-40e0-4ec9-9360-19281bc605e4
+  - ID final usado: 2d385aa5-40e0-4ec9-9360-19281bc605e4
+ℹ️ No se encontró configuración, usando valores por defecto
+📥 GET /api/openai/assistant-details?business_id=2d385aa5-40e0-4ec9-9360-19281bc605e4
+🔍 Obteniendo detalles del asistente OpenAI para negocio: 2d385aa5-40e0-4ec9-9360-19281bc605e4
+ℹ️ La tabla openai_assistants no existe, usando configuración por defecto

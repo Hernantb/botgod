@@ -1,0 +1,8 @@
+# Configuración de Endpoints
+
+# URL del backend para la integración de Google Calendar
+# En desarrollo
+BACKEND_URL=http://localhost:3095
+
+# En producción (ejemplo con ngrok)
+# BACKEND_URL=https://98a4-2806-2f0-93a1-8882-a99d-baa-72f9-4d88.ngrok-free.app 

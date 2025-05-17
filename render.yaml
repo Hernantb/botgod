@@ -1,0 +1,76 @@
+services:
+  - type: web
+    name: whatsapp-bot
+    env: node
+    region: singapore # Choose the region closest to your users
+    plan: starter # Adjust based on your needs
+    buildCommand: npm install
+    startCommand: node index.js
+    healthCheckPath: /status
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: TZ
+        value: America/Argentina/Buenos_Aires
+      - key: FORCE_PORT
+        value: $PORT
+      - key: RENDER
+        value: "true"
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-4-turbo-preview
+      - key: GUPSHUP_API_KEY
+        value: sk_f0dde30df43749e29d3fc63bb662ef9e
+      - key: GUPSHUP_APP_NAME
+        sync: false
+      - key: GUPSHUP_PHONE_NUMBER
+        sync: false
+      - key: GUPSHUP_SOURCE
+        sync: false
+      - key: GUPSHUP_API_KEY_ALTERNATIVE
+        sync: false
+      - key: GUPSHUP_APP_NAME_ALTERNATIVE
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        value: 587
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: EMAIL_FROM
+        sync: false
+      - key: EMAIL_TO
+        sync: false
+      - key: EMAIL_CC
+        sync: false
+      - key: EMAIL_BCC
+        sync: false
+      - key: EMAIL_SUBJECT_PREFIX
+        value: "[WhatsApp Bot]"
+      - key: CONTROL_PANEL_URL
+        sync: false
+      - key: WEBHOOK_URL
+        sync: false
+      - key: DEBUG
+        value: false
+      - key: PORT
+        value: 10000
+      # Las siguientes variables deben configurarse manualmente en Render
+      - key: GUPSHUP_NUMBER
+        sync: false
+      - key: GUPSHUP_USERID
+        sync: false
+      - key: SMTP_FROM
+        sync: false
+      - key: NOTIFICATION_EMAILS
+        sync: false
+      - key: BUSINESS_NAME
+        value: "WhatsApp Bot Avanzado" 

@@ -1,0 +1,376 @@
+/**
+ * Cliente API para interactuar con el servidor
+ */
+
+import type { Conversation, Message } from "@/lib/database";
+
+// Base URL para todas las peticiones
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3010';
+
+// ID hardcodeado conocido que queremos controlar
+const KNOWN_BUSINESS_ID = "2d385aa5-40e0-4ec9-9360-19281bc605e4";
+
+/**
+ * Valida y normaliza el ID del negocio para las llamadas a la API
+ * @param providedId ID del negocio proporcionado, o undefined para usar el ID predeterminado 
+ * @returns ID del negocio válido
+ */
+function getValidBusinessId(providedId?: string): string {
+  // Si se proporciona explícitamente un ID, usarlo sin advertencias en producción
+  if (providedId) {
+    // Solo mostrar advertencias en desarrollo, no en producción
+    if (providedId === KNOWN_BUSINESS_ID && process.env.NODE_ENV === 'development') {
+      console.warn('[api-client] ⚠️ Se detectó el uso del ID hardcodeado conocido:', KNOWN_BUSINESS_ID);
+    }
+    return providedId;
+  }
+  
+  // Si no hay ID, usar el conocido con advertencia solo en desarrollo
+  if (process.env.NODE_ENV === 'development') {
+    console.warn('[api-client] ⚠️ No se proporcionó ID de negocio, usando valor predeterminado:', KNOWN_BUSINESS_ID);
+  }
+  
+  return KNOWN_BUSINESS_ID;
+}
+
+/**
+ * Obtener todas las conversaciones para un negocio
+ * @param businessId ID del negocio (opcional, se usa predeterminado si no se proporciona)
+ * @returns Array de conversaciones
+ */
+export async function fetchConversations(businessId?: string): Promise<any[]> {
+  try {
+    const validBusinessId = getValidBusinessId(businessId);
+    
+    // Solo registrar en desarrollo, no en producción
+    if (process.env.NODE_ENV === 'development') {
+      console.log('[api-client] fetchConversations llamado con businessId:', validBusinessId);
+    }
+    
+    const url = `${API_BASE_URL}/api/conversations/business/${validBusinessId}`;
+    
+    // Solo registrar en desarrollo, no en producción
+    if (process.env.NODE_ENV === 'development') {
+      console.log('[api-client] Fetching conversations from:', url);
+    }
+    
+    // Opciones para la petición fetch con modo no-cors como fallback
+    const options: RequestInit = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      // Añadir credentials para enviar cookies si es necesario
+      credentials: 'include'
+    };
+    
+    // Intentar primero con modo normal
+    try {
+      const response = await fetch(url, options);
+      
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      
+      // Solo registrar en desarrollo, no en producción
+      if (process.env.NODE_ENV === 'development' && Array.isArray(data)) {
+        console.log(`[api-client] Recibidas ${data.length} conversaciones`);
+      }
+      
+      return data;
+    } catch (error: any) {
+      // Si es un error CORS, proporcionar un mensaje claro y datos de ejemplo para desarrollo
+      if (error.message && error.message.includes('Failed to fetch')) {
+        console.error('[api-client] Error CORS detectado. Revise que el servidor esté configurado correctamente.');
+        console.error('[api-client] El servidor en localhost:3010 debe permitir solicitudes desde ' + window.location.origin);
+        
+        // Solo en desarrollo: verificar si el servidor está en ejecución
+        if (process.env.NODE_ENV === 'development') {
+          console.log('[api-client] Verificando si el servidor API está en ejecución...');
+          
+          try {
+            // Crear datos de ejemplo para desarrollo
+            return [
+              {
+                id: 'ejemplo-1',
+                sender_name: 'Usuario de prueba (CORS error)',
+                user_id: '+5491122334455',
+                last_message: 'Este es un mensaje de prueba debido a error CORS',
+                last_message_time: new Date().toISOString(),
+                unread_count: 0,
+                tag: 'gray',
+                is_bot_active: true,
+                user_category: 'default',
+                created_at: new Date().toISOString()
+              }
+            ];
+          } catch (e) {
+            console.error('[api-client] No se pudo verificar el estado del servidor');
+          }
+        }
+      }
+      
+      throw error;
+    }
+  } catch (error) {
+    console.error('Error fetching conversations:', error);
+    
+    // Devolver un array vacío en lugar de lanzar el error
+    // para que la UI pueda mostrar un estado vacío en lugar de errores
+    return [];
+  }
+}
+
+/**
+ * Obtener mensajes para una conversación específica
+ * @param conversationId ID de la conversación
+ * @returns Array de mensajes o objeto con propiedad messages que contiene un array
+ */
+export async function fetchMessages(conversationId: string): Promise<any> {
+  try {
+    if (!conversationId) {
+      console.error('Error: Se requiere un ID de conversación válido');
+      return [];
+    }
+    
+    console.log(`📱 Obteniendo mensajes para: ${conversationId}`);
+    const url = `${API_BASE_URL}/api/messages/${conversationId}`;
+    
+    // Opciones para la petición fetch con credenciales
+    const options: RequestInit = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      credentials: 'include'
+    };
+    
+    const response = await fetch(url, options);
+    
+    if (!response.ok) {
+      console.error(`Error ${response.status}: ${response.statusText}`);
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    
+    // Añadir logs para depuración
+    if (data && typeof data === 'object' && 'messages' in data && Array.isArray(data.messages)) {
+      console.log(`✅ Se recibieron ${data.messages.length} mensajes del servidor (formato objeto)`);
+      
+      // Si hay información adicional, mostrarla
+      if (data.conversationId) {
+        console.log(`ℹ️ Conversación confirmada: ${data.conversationId}`);
+      }
+    } else if (Array.isArray(data)) {
+      console.log(`✅ Se recibieron ${data.length} mensajes del servidor (formato array)`);
+    } else {
+      console.warn('⚠️ Formato de respuesta inesperado:', data);
+    }
+    
+    // Devolver los datos tal como vienen, el procesamiento se hará en getMessagesForConversation
+    return data;
+  } catch (error: any) {
+    // Si es un error CORS, proporcionar un mensaje claro
+    if (error.message && error.message.includes('Failed to fetch')) {
+      console.error('[api-client] Error CORS detectado al obtener mensajes.');
+      console.error('[api-client] El servidor en localhost:3010 debe permitir solicitudes desde ' + window.location.origin);
+      
+      // En desarrollo, devolver mensajes de ejemplo
+      if (process.env.NODE_ENV === 'development') {
+        return {
+          messages: [
+            {
+              id: 'msg-ejemplo-1',
+              conversation_id: conversationId,
+              content: 'Este es un mensaje de ejemplo debido a error CORS',
+              sender_type: 'bot',
+              created_at: new Date().toISOString(),
+            },
+            {
+              id: 'msg-ejemplo-2',
+              conversation_id: conversationId,
+              content: 'Por favor, inicia el servidor de API en localhost:3010 y configura CORS correctamente',
+              sender_type: 'user',
+              created_at: new Date(Date.now() - 60000).toISOString(),
+            }
+          ],
+          conversationId: conversationId
+        };
+      }
+    }
+    
+    console.error('Error obteniendo mensajes:', error);
+    return { messages: [] };
+  }
+}
+
+/**
+ * Enviar un mensaje a una conversación
+ * @param conversationId ID de la conversación
+ * @param content Contenido del mensaje
+ * @param businessId ID del negocio (opcional, se usa predeterminado si no se proporciona)
+ * @param senderType Tipo de remitente (opcional, por defecto 'agent')
+ * @returns El mensaje enviado con datos adicionales del servidor
+ */
+export async function sendMessage(
+  conversationId: string, 
+  content: string, 
+  businessId?: string,
+  senderType: 'user' | 'bot' | 'agent' = 'agent'
+) {
+  try {
+    if (!conversationId) {
+      throw new Error('Se requiere ID de conversación');
+    }
+    
+    if (!content) {
+      throw new Error('Se requiere contenido del mensaje');
+    }
+    
+    const validBusinessId = getValidBusinessId(businessId);
+    
+    // Optimistic message para mostrar inmediatamente en la UI
+    const optimisticMessage = {
+      id: `temp-${Date.now()}`,
+      conversation_id: conversationId,
+      content,
+      user_id: validBusinessId,
+      sender_type: senderType,
+      created_at: new Date().toISOString(),
+    };
+    
+    const url = `${API_BASE_URL}/api/messages`;
+    
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        conversationId,
+        message: content,
+        senderType,
+        businessId: validBusinessId,
+      }),
+    });
+    
+    if (!response.ok) {
+      console.error(`Error al enviar mensaje: ${response.status}`);
+      const errorData = await response.json().catch(() => ({}));
+      console.error('Detalles del error:', errorData);
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    
+    // Devolver el mensaje real del servidor o el optimista si hay problemas
+    try {
+      const data = await response.json();
+      return data;
+    } catch (parseError) {
+      console.warn('Error al parsear respuesta, usando mensaje optimista:', parseError);
+      return optimisticMessage;
+    }
+  } catch (error) {
+    console.error('Error sending message:', error);
+    throw error;
+  }
+}
+
+/**
+ * Activa o desactiva el bot para una conversación
+ * @param conversationId ID de la conversación
+ * @param active Estado del bot (activado/desactivado)
+ */
+export async function toggleBot(conversationId: string, active: boolean) {
+  try {
+    console.log(`🤖 ${active ? 'Activando' : 'Desactivando'} bot para conversación: ${conversationId}`);
+    
+    if (!conversationId) {
+      console.error('❌ Error: conversationId es requerido para toggleBot');
+      throw new Error('Se requiere ID de conversación');
+    }
+    
+    const url = `${API_BASE_URL}/api/conversations/${conversationId}/toggle-bot`;
+    console.log(`📡 Enviando solicitud a: ${url}`);
+    
+    const response = await fetch(url, {
+      method: 'POST', // Usar POST en lugar de PUT para evitar problemas CORS
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({ active }),
+      credentials: 'include' // Importante: incluir credenciales si hay cookies de autenticación
+    });
+    
+    if (!response.ok) {
+      console.error(`❌ Error ${response.status} al cambiar estado del bot`);
+      
+      // Intentar obtener detalles del error
+      try {
+        const errorData = await response.json();
+        console.error('Detalles del error:', errorData);
+        throw new Error(`Error ${response.status}: ${errorData.message || response.statusText}`);
+      } catch (parseError) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+    }
+    
+    // Obtener la respuesta
+    try {
+      const data = await response.json();
+      console.log(`✅ Respuesta del servidor:`, data);
+      return data;
+    } catch (parseError) {
+      console.warn('⚠️ Error al parsear respuesta:', parseError);
+      // Si hay error al parsear pero la petición fue exitosa, devolver un objeto genérico
+      return { success: true, active };
+    }
+  } catch (error) {
+    console.error('❌ Error en toggleBot:', error);
+    throw error;
+  }
+}
+
+/**
+ * Obtiene información sobre un negocio
+ * @param businessId ID del negocio
+ */
+export async function fetchBusinessData(businessId: string) {
+  let retries = 3;
+  
+  while (retries > 0) {
+    try {
+      const url = `${API_BASE_URL}/api/business/${businessId}`;
+      console.log("Fetching business data from:", url);
+      
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+      
+      const businessData = await response.json();
+      return businessData;
+    } catch (error) {
+      retries--;
+      console.error(`Error fetching business data (intento ${4 - retries}/3):`, error);
+      
+      if (retries === 0) {
+        throw error;
+      }
+      
+      // Esperar antes de reintentar
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+  }
+} 

@@ -1,0 +1,198 @@
+# Dependencias
+node_modules/
+jspm_packages/
+bower_components/
+npm-debug.log
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+package-lock.json
+yarn.lock
+
+# Variables de entorno (excepto la plantilla)
+.env
+.env.local
+.env.development
+.env.test.local
+.env.production
+.env.production.local
+.env.development.local
+.env.*
+*.env
+
+# Archivos de respaldo
+backups/
+*.bak
+*.backup
+*.tmp
+*.old
+*backup*/
+*copy*/
+*-backup*
+*-backup.*
+*backup-*
+*.backup-*
+
+# Logs
+logs/
+*.log
+debug.log
+server_log.txt
+server_logs.txt
+nohup.out
+all-requests.log
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+.directory
+ehthumbs.db
+Icon?
+
+# Editores
+.idea/
+.vscode/
+.vscode-test
+*.swp
+*.swo
+*~
+
+# Archivos de claves y certificados
+*.pem
+*.key
+*.cert
+*.p12
+*.pfx
+*.crt
+*.ca-bundle
+*.ca-crt
+*.cer
+*.der
+*.priv
+*client_secret*.json
+*_credentials.json
+*credentials*.json
+*client_secrets*.json
+*token*.json
+*oauth*.json
+
+# Archivos temporales
+tmp/
+temp/
+.temp
+.cache/ 
+.parcel-cache
+
+# Next.js build output
+.next
+out
+
+# Nuxt.js build / generate output
+.nuxt
+dist
+
+# Diagnostic reports
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Testing and Coverage
+lib-cov
+coverage
+*.lcov
+.nyc_output
+
+# Build directories
+build/Release
+.serverless/
+.docusaurus
+.vuepress/dist
+
+# TypeScript
+*.tsbuildinfo
+
+# Caches
+.npm
+.eslintcache
+.stylelintcache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+.lock-wscript
+.fusebox/
+.dynamodb/
+.tern-port
+
+# Node.js
+.node_repl_history
+
+# NPM
+*.tgz
+.yarn-integrity
+
+# Yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# Snowpack
+web_modules/
+
+# Grunt
+.grunt
+
+# Config files que puedan contener secretos
+supabase-config.js
+supabase-config.cjs
+**/lib/supabase*.ts
+**/lib/supabase*.js
+check_table_structure.js
+check_recent_messages.js
+check-business-users.js
+notification-test.js
+check_messages.ts
+check-db.js
+fix_conversations.js
+setup_business.js
+inject-session.js
+check-conversations.js
+delete_messages_batch.js
+clean_old_messages.js
+create_exec_sql.js
+setup_test_messages.js
+create_messages_table.js
+add-status-column.js
+notification-handler.js
+check_messages.js
+fix_messages_access.js
+check-supabase-connection.js
+temp_fixes/diagnose.js
+
+# Archivos específicos con tokens y claves
+NOTIFICATIONS-README.md
+**/gupshup-diagnostic.js
+**/gupshup-solution.js
+**/notification-patch.js
+**/notification-patch.cjs
+
+# Archivos con tokens y credenciales
+**/*apikey*
+**/*secret*
+**/*password*
+**/*credential*
+**/*token*
+**/*auth*
+
+# Patrones específicos para API keys y tokens
+**/*eyJhbGciOi*
+**/*sk-*
+# Cualquier otro patrón común en API keys
+**/*bearer*

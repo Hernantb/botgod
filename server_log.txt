@@ -1,0 +1,7 @@
+✅ Ruta /uploads configurada para servir archivos estáticos como respaldo
+✅ Tabla conversations accesible
+✅ La columna status existe
+✅ Columnas notification_sent y notification_timestamp existen o fueron creadas
+✅ Tabla messages accesible
+✅ Columna sent_to_whatsapp existe o fue creada
+🔧 Verificación de columnas completada
