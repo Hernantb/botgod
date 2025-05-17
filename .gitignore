@@ -18,21 +18,37 @@ yarn.lock
 .env.production
 .env.production.local
 .env.development.local
+.env.*
+*.env
 
 # Archivos de respaldo
 backups/
 *.bak
 *.backup
 *.tmp
+*.old
+*backup*/
+*copy*/
+*-backup*
+*-backup.*
+*backup-*
+*.backup-*
 
 # Logs
 logs/
 *.log
+debug.log
+server_log.txt
+server_logs.txt
+nohup.out
+all-requests.log
 
 # Sistema operativo
 .DS_Store
 Thumbs.db
 .directory
+ehthumbs.db
+Icon?
 
 # Editores
 .idea/
@@ -46,6 +62,20 @@ Thumbs.db
 *.pem
 *.key
 *.cert
+*.p12
+*.pfx
+*.crt
+*.ca-bundle
+*.ca-crt
+*.cer
+*.der
+*.priv
+*client_secret*.json
+*_credentials.json
+*credentials*.json
+*client_secrets*.json
+*token*.json
+*oauth*.json
 
 # Archivos temporales
 tmp/
@@ -119,40 +149,50 @@ web_modules/
 # Grunt
 .grunt
 
-# Archivos de configuración y claves
-.env.*
-*.pem
-*.key
-*client_secret*.json
+# Config files que puedan contener secretos
+supabase-config.js
+supabase-config.cjs
+**/lib/supabase*.ts
+**/lib/supabase*.js
+check_table_structure.js
+check_recent_messages.js
+check-business-users.js
+notification-test.js
+check_messages.ts
+check-db.js
+fix_conversations.js
+setup_business.js
+inject-session.js
+check-conversations.js
+delete_messages_batch.js
+clean_old_messages.js
+create_exec_sql.js
+setup_test_messages.js
+create_messages_table.js
+add-status-column.js
+notification-handler.js
+check_messages.js
+fix_messages_access.js
+check-supabase-connection.js
+temp_fixes/diagnose.js
 
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Archivos específicos con tokens y claves
+NOTIFICATIONS-README.md
+**/gupshup-diagnostic.js
+**/gupshup-solution.js
+**/notification-patch.js
+**/notification-patch.cjs
 
-# Carpetas de build
-dist/
-build/
-out/
+# Archivos con tokens y credenciales
+**/*apikey*
+**/*secret*
+**/*password*
+**/*credential*
+**/*token*
+**/*auth*
 
-# Archivos temporales
-tmp/
-temp/
-*.tmp
-*.bak
-*.swp
-
-# Archivos del sistema
-.DS_Store
-Thumbs.db
-ehthumbs.db
-Icon?
-
-# Archivos de respaldo
-*.backup
-*-backup.*
-*copy.*
-*.old
-*backup*/
+# Patrones específicos para API keys y tokens
+**/*eyJhbGciOi*
+**/*sk-*
+# Cualquier otro patrón común en API keys
+**/*bearer*
