@@ -2,11 +2,16 @@
 require('dotenv').config();
 const nodemailer = require('nodemailer');
 
-// Importar configuración de Supabase
-const { supabase } = require('./supabase-config.cjs');
+// Importar configuración para Supabase y crear cliente
+const { createClient } = require('@supabase/supabase-js');
+const { SUPABASE_URL, SUPABASE_KEY } = require('./supabase-config.cjs');
+
+// Inicializar cliente de Supabase
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // Configuración para envío de correos
 const EMAIL_USER = process.env.EMAIL_USER || 'bexorai@gmail.com';
+// La contraseña del correo se obtiene desde Supabase para cada negocio
 const EMAIL_APP_PASSWORD = process.env.EMAIL_APP_PASSWORD;
 const EMAIL_TO_DEFAULT = process.env.EMAIL_TO || 'bexorai@gmail.com';
 
@@ -14,16 +19,66 @@ const EMAIL_TO_DEFAULT = process.env.EMAIL_TO || 'bexorai@gmail.com';
 console.log(`📧 Configuración de notificaciones por correo:`);
 console.log(`📧 Correo remitente: ${EMAIL_USER}`);
 console.log(`📧 Correo destinatario predeterminado: ${EMAIL_TO_DEFAULT}`);
-console.log(`📧 Contraseña configurada: ${EMAIL_APP_PASSWORD ? '✅ SÍ' : '❌ NO'}`);
+console.log(`📧 Contraseña configurada: ${EMAIL_APP_PASSWORD ? '✅ SÍ' : '❌ NO (se obtendrá de la base de datos)'}`);
 
-// Configurar transport de correo
-const mailTransport = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: EMAIL_USER,
-    pass: EMAIL_APP_PASSWORD
+/**
+ * Obtiene la contraseña del correo desde business_config
+ * @param {string} businessId - ID del negocio
+ * @returns {string} - Contraseña del correo o valor por defecto
+ */
+async function getEmailPassword(businessId) {
+  try {
+    console.log(`🔑 Obteniendo contraseña para correo del negocio: ${businessId || 'No especificado'}`);
+    
+    // Primero intentamos buscar por business_id específico
+    if (businessId) {
+      const { data: specificData, error: specificError } = await supabase
+        .from('business_config')
+        .select('EMAIL_APP_PASSWORD')
+        .eq('business_id', businessId);
+      
+      if (!specificError && specificData && specificData.length > 0 && specificData[0].EMAIL_APP_PASSWORD) {
+        console.log(`✅ Contraseña de correo encontrada para negocio específico: ${businessId}`);
+        return specificData[0].EMAIL_APP_PASSWORD;
+      }
+    }
+    
+    // Si no encontramos por business_id o no se proporcionó, buscar cualquier registro con contraseña
+    const { data, error } = await supabase
+      .from('business_config')
+      .select('EMAIL_APP_PASSWORD')
+      .limit(1);
+    
+    if (error) {
+      console.error(`❌ Error obteniendo contraseña de correo: ${error.message}`);
+      return EMAIL_APP_PASSWORD;
+    }
+    
+    if (data && data.length > 0 && data[0].EMAIL_APP_PASSWORD) {
+      console.log(`✅ Contraseña de correo obtenida del primer registro disponible`);
+      return data[0].EMAIL_APP_PASSWORD;
+    } else {
+      console.warn(`⚠️ No se encontró contraseña de correo en ningún registro`);
+      return EMAIL_APP_PASSWORD;
+    }
+  } catch (error) {
+    console.error(`❌ Error obteniendo contraseña de correo: ${error.message}`);
+    return EMAIL_APP_PASSWORD;
   }
-});
+}
+
+// Función para crear un transporte de correo con las credenciales adecuadas
+async function createMailTransport(businessId) {
+  const password = await getEmailPassword(businessId);
+  
+  return nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: EMAIL_USER,
+      pass: password
+    }
+  });
+}
 
 // Lista de frases predeterminadas que indican que se necesita atención humana
 const DEFAULT_NOTIFICATION_PHRASES = [
@@ -125,7 +180,7 @@ function clearKeywordsCache(businessId = null) {
  * @param {string} businessId - ID del negocio (opcional)
  * @returns {Promise<boolean>} - True si el mensaje contiene alguna de las frases de notificación
  */
-async function checkForNotificationPhrases(message, businessId = null) {
+async function checkForNotificationPhrases(message, businessId = null, conversationId = null) {
   if (!message) return false;
   
   // Normalizar el mensaje (convertir a minúsculas, eliminar espacios extras)
@@ -133,6 +188,7 @@ async function checkForNotificationPhrases(message, businessId = null) {
   
   console.log(`🔍 Analizando mensaje para notificación: "${normalizedMessage.substring(0, 60)}..."`);
   console.log(`🏢 Business ID: ${businessId || 'No disponible'}`);
+  console.log(`💬 Conversation ID: ${conversationId || 'No disponible'}`);
   
   // Determinar qué palabras clave usar (personalizadas o predeterminadas)
   let phrases = DEFAULT_NOTIFICATION_PHRASES;
@@ -156,8 +212,53 @@ async function checkForNotificationPhrases(message, businessId = null) {
       
       // Intentar actualizar el estado del cliente a importante
       try {
-        if (businessId) {
-          // Obtener ID de la conversación si solo tenemos el mensaje
+        if (businessId && conversationId) {
+          // Actualizar el estado del cliente en la conversación directamente con el ID proporcionado
+          console.log(`🔄 Actualizando conversación con ID: ${conversationId}`);
+          const { error: updateError } = await supabase
+            .from('conversations')
+            .update({ 
+              is_important: true, // Usar is_important en lugar de status
+              user_category: 'important', // Necesario para el dashboard
+              tag: 'yellow', // Color para conversaciones importantes
+              colorLabel: 'yellow', // Color visual en la UI
+              manuallyMovedToAll: false, // Asegurar que aparezca en la columna "Importantes"
+              notification_sent: true,
+              notification_timestamp: new Date().toISOString(),
+              last_message: "⚠️ REQUIERE ATENCIÓN - Notificación enviada",
+              updated_at: new Date().toISOString()
+            })
+            .eq('id', conversationId);
+            
+          if (updateError) {
+            console.error(`❌ Error al actualizar estado de conversación: ${updateError.message}`);
+            
+            // Intentar actualizar solo los campos esenciales si falló la actualización completa
+            try {
+              const { error: importantError } = await supabase
+                .from('conversations')
+                .update({ 
+                  is_important: true,
+                  user_category: 'important',
+                  manuallyMovedToAll: false,
+                  notification_sent: true,
+                  notification_timestamp: new Date().toISOString()
+                })
+                .eq('id', conversationId);
+              
+              if (importantError) {
+                console.error(`❌ Error al actualizar campos esenciales: ${importantError.message}`);
+              } else {
+                console.log(`✅ Campos esenciales actualizados correctamente`);
+              }
+            } catch (fieldError) {
+              console.error(`❌ Error actualizando campos individuales: ${fieldError.message}`);
+            }
+          } else {
+            console.log(`✅ Estado de conversación actualizado a 'importante'`);
+          }
+        } else if (businessId) {
+          // Si tenemos businessId pero no conversationId, intentar buscar por contenido del mensaje (forma antigua)
           const { data: msgData, error: msgError } = await supabase
             .from('messages')
             .select('conversation_id')
@@ -166,48 +267,30 @@ async function checkForNotificationPhrases(message, businessId = null) {
             .limit(1);
           
           if (!msgError && msgData && msgData.length > 0) {
-            const conversationId = msgData[0].conversation_id;
+            const foundConversationId = msgData[0].conversation_id;
+            console.log(`🔍 Conversación encontrada por contenido: ${foundConversationId}`);
             
-            // Actualizar el estado del cliente en la conversación
+            // Actualizar estado usando el ID encontrado
             const { error: updateError } = await supabase
               .from('conversations')
               .update({ 
-                is_important: true, // Usar is_important en lugar de status
-                user_category: 'important', // Necesario para el dashboard
-                tag: 'yellow', // Color para conversaciones importantes
-                colorLabel: 'yellow', // Color visual en la UI
-                manuallyMovedToAll: false, // Asegurar que aparezca en la columna "Importantes"
+                is_important: true,
+                user_category: 'important',
+                tag: 'yellow',
+                colorLabel: 'yellow',
+                manuallyMovedToAll: false,
                 notification_sent: true,
-                notification_timestamp: new Date().toISOString(),
-                last_message: "⚠️ REQUIERE ATENCIÓN - Notificación enviada",
-                updated_at: new Date().toISOString()
+                notification_timestamp: new Date().toISOString()
               })
-              .eq('id', conversationId);
+              .eq('id', foundConversationId);
             
             if (updateError) {
-              console.error(`❌ Error al actualizar estado de conversación: ${updateError.message}`);
-              
-              // Intentar actualizar solo is_important si falló la actualización completa
-              try {
-                const { error: importantError } = await supabase
-                  .from('conversations')
-                  .update({ 
-                    is_important: true,
-                    user_category: 'important'
-                  })
-                  .eq('id', conversationId);
-                
-                if (importantError) {
-                  console.error(`❌ Error al actualizar is_important: ${importantError.message}`);
-                } else {
-                  console.log(`✅ Campos is_important y user_category actualizados correctamente`);
-                }
-              } catch (fieldError) {
-                console.error(`❌ Error actualizando campo individual: ${fieldError.message}`);
-              }
+              console.error(`❌ Error al actualizar por contenido: ${updateError.message}`);
             } else {
-              console.log(`✅ Estado de conversación actualizado a 'importante'`);
+              console.log(`✅ Actualización por contenido exitosa`);
             }
+          } else {
+            console.error(`❌ No se encontró conversación por contenido del mensaje`);
           }
         }
       } catch (updateError) {
@@ -317,8 +400,8 @@ async function processMessageForNotification(message, conversationId, phoneNumbe
     }
     
     // Verificar si el mensaje contiene alguna frase que requiera notificación
-    // Ahora pasamos el businessId para obtener palabras clave personalizadas
-    const requiresNotification = await checkForNotificationPhrases(message, businessId);
+    // Ahora pasamos el businessId y conversationId para procesamiento directo
+    const requiresNotification = await checkForNotificationPhrases(message, businessId, conversationId);
     
     if (!requiresNotification) {
       console.log('❌ No se requiere notificación. Finalizando procesamiento.');
@@ -470,6 +553,46 @@ async function processMessageForNotification(message, conversationId, phoneNumbe
       businessName = 'Hernán Tenorio';
       foundValidEmail = true;
       console.log(`⚠️ Usando correo específico para Hernán Tenorio: ${businessEmail}`);
+      
+      // Asegurar que las palabras clave específicas para Hernán se están capturando
+      try {
+        console.log(`🔍 Actualizando o verificando palabra clave "PERRO" para Hernán`);
+        
+        // Verificar si ya existe la palabra clave PERRO
+        const { data: existingKeyword, error: keywordCheckError } = await supabase
+          .from('notification_keywords')
+          .select('*')
+          .eq('business_id', businessId)
+          .eq('keyword', 'PERRO')
+          .eq('enabled', true);
+        
+        if (keywordCheckError) {
+          console.error(`❌ Error verificando palabra clave PERRO: ${keywordCheckError.message}`);
+        } else if (!existingKeyword || existingKeyword.length === 0) {
+          // Si no existe, la creamos
+          console.log(`⚠️ Palabra clave "PERRO" no encontrada, creándola...`);
+          
+          const { error: insertError } = await supabase
+            .from('notification_keywords')
+            .insert({
+              business_id: businessId,
+              keyword: 'PERRO',
+              enabled: true
+            });
+          
+          if (insertError) {
+            console.error(`❌ Error creando palabra clave PERRO: ${insertError.message}`);
+          } else {
+            console.log(`✅ Palabra clave "PERRO" creada exitosamente`);
+            // Limpiar caché para asegurar que se use la nueva palabra clave
+            clearKeywordsCache(businessId);
+          }
+        } else {
+          console.log(`✅ Palabra clave "PERRO" ya existe y está habilitada`);
+        }
+      } catch (keywordError) {
+        console.error(`❌ Error gestionando palabra clave especial: ${keywordError.message}`);
+      }
     }
     
     // Si después de todos los intentos no encontramos un correo válido, usar el predeterminado
@@ -548,9 +671,14 @@ async function getLastMessages(conversationId, limit = 20) {
  */
 async function sendBusinessNotification(message, conversationId, phoneNumber, emailTo, businessId, businessName = 'BEXOR') {
   try {
-    if (!EMAIL_APP_PASSWORD) {
+    // Obtener la contraseña del correo y crear el transporte
+    const mailTransport = await createMailTransport(businessId);
+    
+    // Verificar si tenemos una contraseña (ya sea de ENV o de la base de datos)
+    const password = await getEmailPassword(businessId);
+    if (!password) {
       console.error('⚠️ IMPORTANTE: No se puede enviar notificación por correo: falta configurar EMAIL_APP_PASSWORD');
-      console.error('⚠️ Agrega la variable EMAIL_APP_PASSWORD a las variables de entorno en Render');
+      console.error('⚠️ Verifica que exista en las variables de entorno o en la tabla business_config para este negocio');
       console.error('⚠️ Mensaje que requiere atención: ' + message.substring(0, 100));
       console.error('⚠️ Teléfono del cliente: ' + phoneNumber);
       console.error('⚠️ ID del negocio: ' + businessId);
@@ -1056,7 +1184,7 @@ console.log(`
 🔔 Módulo de notificaciones inicializado
 📧 Remitente: ${EMAIL_USER}
 📧 Destinatario por defecto: ${EMAIL_TO_DEFAULT}
-🔑 Contraseña configurada: ${EMAIL_APP_PASSWORD ? '✅ SÍ' : '❌ NO'}
+🔑 Contraseña configurada: ${EMAIL_APP_PASSWORD ? '✅ SÍ' : '❌ NO (se obtendrá de la base de datos)'}
 🔍 Modo diagnóstico: ACTIVADO
 📝 Frases predeterminadas: ${DEFAULT_NOTIFICATION_PHRASES.length}
 `);
