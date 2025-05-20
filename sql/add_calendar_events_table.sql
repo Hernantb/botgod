@@ -4,12 +4,14 @@
 -- 1. Crear la tabla calendar_events
 CREATE TABLE IF NOT EXISTS public.calendar_events (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  business_id UUID NOT NULL,
+  business_id UUID NOT NULL REFERENCES business_config(id) ON DELETE CASCADE,
   event_id TEXT NOT NULL, -- ID del evento en Google Calendar
   customer_phone TEXT NOT NULL, -- Número de teléfono del cliente
   customer_name TEXT, -- Nombre del cliente (opcional)
   event_date DATE NOT NULL, -- Fecha del evento
   event_time TEXT NOT NULL, -- Hora del evento (HH:MM)
+  appointment_type_id UUID REFERENCES appointment_types(id) ON DELETE SET NULL,
+  duration INTEGER NOT NULL DEFAULT 60,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
   canceled BOOLEAN DEFAULT FALSE, -- Flag para marcar si la cita fue cancelada
@@ -21,6 +23,7 @@ CREATE INDEX IF NOT EXISTS idx_calendar_events_business_id ON public.calendar_ev
 CREATE INDEX IF NOT EXISTS idx_calendar_events_customer_phone ON public.calendar_events(customer_phone);
 CREATE INDEX IF NOT EXISTS idx_calendar_events_event_date ON public.calendar_events(event_date);
 CREATE INDEX IF NOT EXISTS idx_calendar_events_event_id ON public.calendar_events(event_id);
+CREATE INDEX IF NOT EXISTS idx_calendar_events_appointment_type_id ON public.calendar_events(appointment_type_id);
 
 -- 3. Añadir comentarios
 COMMENT ON TABLE public.calendar_events IS 'Almacena referencias a eventos creados en Google Calendar';
@@ -31,6 +34,8 @@ COMMENT ON COLUMN public.calendar_events.customer_phone IS 'Número de teléfono
 COMMENT ON COLUMN public.calendar_events.customer_name IS 'Nombre del cliente (opcional)';
 COMMENT ON COLUMN public.calendar_events.event_date IS 'Fecha del evento en formato YYYY-MM-DD';
 COMMENT ON COLUMN public.calendar_events.event_time IS 'Hora del evento en formato HH:MM';
+COMMENT ON COLUMN public.calendar_events.appointment_type_id IS 'ID del tipo de cita';
+COMMENT ON COLUMN public.calendar_events.duration IS 'Duración de la cita en minutos';
 COMMENT ON COLUMN public.calendar_events.created_at IS 'Fecha y hora de creación del registro';
 COMMENT ON COLUMN public.calendar_events.updated_at IS 'Fecha y hora de última actualización del registro';
 COMMENT ON COLUMN public.calendar_events.canceled IS 'Indica si la cita fue cancelada';
