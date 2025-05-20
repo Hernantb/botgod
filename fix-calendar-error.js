@@ -14,95 +14,99 @@ async function diagnoseCalendarConfig() {
   console.log(`Verificando business_id: ${businessId}`);
   
   try {
-    // Verificar si el negocio existe y obtener datos de Google Calendar
+    // 1. Verificar variables de entorno requeridas
+    console.log('\nVerificando variables de entorno:');
+    const requiredEnvVars = [
+      'GOOGLE_CLIENT_ID',
+      'GOOGLE_CLIENT_SECRET',
+      'GOOGLE_REDIRECT_URI'
+    ];
+    
+    const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+    if (missingVars.length > 0) {
+      console.error('❌ Faltan las siguientes variables de entorno:');
+      missingVars.forEach(varName => console.log(`   - ${varName}`));
+    } else {
+      console.log('✅ Todas las variables de entorno requeridas están presentes');
+    }
+    
+    // 2. Verificar si el negocio existe y obtener datos de Google Calendar
     const { data, error } = await supabase
       .from('business_config')
       .select('*')
-      .eq('business_id', businessId);
+      .eq('id', businessId)
+      .single();
       
     if (error) {
-      console.error('Error consultando business_config:', error.message);
+      console.error('❌ Error consultando business_config:', error.message);
       return;
     }
     
-    if (!data || data.length === 0) {
-      console.error(`No se encontró configuración para business_id: ${businessId}`);
+    if (!data) {
+      console.error(`❌ No se encontró configuración para business_id: ${businessId}`);
       
-      // Obtener la estructura de la tabla para verificar columnas requeridas
-      console.log('Obteniendo estructura de la tabla business_config...');
-      try {
-        const { data: tableInfo, error: tableError } = await supabase
-          .rpc('get_table_definition', { table_name: 'business_config' });
-          
-        if (tableError) {
-          console.error('Error obteniendo estructura de tabla:', tableError.message);
-        } else if (tableInfo) {
-          console.log('Columnas requeridas:', tableInfo
-            .filter(col => col.is_nullable === 'NO')
-            .map(col => col.column_name)
-            .join(', '));
-        }
-      } catch (tableErr) {
-        console.error('Error consultando estructura:', tableErr.message);
-      }
-      
-      // Intentar insertar una configuración básica incluyendo todos los campos requeridos
+      // Intentar crear una configuración básica
       console.log('Intentando crear configuración básica...');
       const { error: insertError } = await supabase
         .from('business_config')
         .insert({
-          business_id: businessId,
+          id: businessId,
           google_calendar_enabled: false,
-          business_name: 'Empresa Original', // Nombre de ejemplo
-          openai_assistant_id: 'asst_temp123456', // Valor temporal
+          business_name: 'Empresa Original',
+          openai_assistant_id: 'asst_temp123456',
           is_bot_active: true,
           created_at: new Date().toISOString()
         });
         
       if (insertError) {
-        console.error('Error creando configuración:', insertError.message);
+        console.error('❌ Error creando configuración:', insertError.message);
       } else {
         console.log('✅ Configuración básica creada exitosamente');
       }
-      
       return;
     }
     
-    // Mostrar datos encontrados
-    console.log(`Encontradas ${data.length} configuraciones para este negocio:`);
+    // 3. Verificar la configuración de Google Calendar
+    console.log('\nConfiguración actual de Google Calendar:');
+    console.log(`- Habilitado: ${data.google_calendar_enabled ? 'SÍ' : 'NO'}`);
+    console.log(`- Refresh Token: ${data.google_calendar_refresh_token ? 'PRESENTE' : 'NO PRESENTE'}`);
+    console.log(`- Access Token: ${data.google_calendar_access_token ? 'PRESENTE' : 'NO PRESENTE'}`);
+    console.log(`- Token Expiry: ${data.google_calendar_token_expiry || 'NO CONFIGURADO'}`);
+    console.log(`- Calendar ID: ${data.google_calendar_id || 'NO CONFIGURADO'}`);
     
-    data.forEach((config, index) => {
-      console.log(`\nConfiguración #${index + 1}:`);
-      console.log(`- ID: ${config.id}`);
-      console.log(`- Business ID: ${config.business_id}`);
-      console.log(`- Nombre: ${config.business_name}`);
-      console.log(`- Google Calendar habilitado: ${config.google_calendar_enabled ? 'SÍ' : 'NO'}`);
-      console.log(`- Google Calendar refresh token: ${config.google_calendar_refresh_token ? 'Configurado' : 'NO CONFIGURADO'}`);
-      console.log(`- Google Calendar ID: ${config.google_calendar_id || 'No configurado'}`);
-      console.log(`- Última actualización: ${config.google_calendar_updated_at || 'Nunca'}`);
-      console.log(`- OpenAI Assistant ID: ${config.openai_assistant_id}`);
-    });
-    
-    // Verificar si hay demasiadas configuraciones
-    if (data.length > 1) {
-      console.warn('\n⚠️ ADVERTENCIA: Hay múltiples configuraciones para este negocio.');
-      console.warn('Esto puede causar problemas con el endpoint /api/business/:businessId/calendar-status');
-      console.warn('que espera un único resultado (usa .single() en la consulta).');
-      
-      // Sugerir solución
-      console.log('\nSugerencia: Conservar solo una configuración y eliminar las demás.');
-      console.log('ID a conservar:', data[0].id);
+    // 4. Verificar si necesita reautenticación
+    if (!data.google_calendar_refresh_token) {
+      console.log('\n⚠️ Se requiere autenticación con Google Calendar');
+      console.log('El usuario debe completar el proceso de autenticación OAuth');
     }
     
-    // Verificar Google OAuth
-    console.log('\nVerificando variables de entorno para Google OAuth:');
-    console.log(`- GOOGLE_CLIENT_ID: ${process.env.GOOGLE_CLIENT_ID ? 'Configurado' : 'NO CONFIGURADO'}`);
-    console.log(`- GOOGLE_CLIENT_SECRET: ${process.env.GOOGLE_CLIENT_SECRET ? 'Configurado' : 'NO CONFIGURADO'}`);
-    console.log(`- GOOGLE_REDIRECT_URI: ${process.env.GOOGLE_REDIRECT_URI ? 'Configurado' : 'NO CONFIGURADO'}`);
+    // 5. Verificar y corregir campos faltantes
+    const updates = {};
+    if (data.google_calendar_enabled === undefined) updates.google_calendar_enabled = false;
+    if (!data.google_calendar_updated_at) updates.google_calendar_updated_at = new Date().toISOString();
+    if (!data.google_calendar_id) updates.google_calendar_id = 'primary';
+    
+    if (Object.keys(updates).length > 0) {
+      console.log('\nActualizando campos faltantes...');
+      const { error: updateError } = await supabase
+        .from('business_config')
+        .update(updates)
+        .eq('id', businessId);
+        
+      if (updateError) {
+        console.error('❌ Error actualizando campos:', updateError.message);
+      } else {
+        console.log('✅ Campos actualizados correctamente');
+        console.log('Campos actualizados:', updates);
+      }
+    }
     
   } catch (error) {
-    console.error('Error en diagnóstico:', error);
+    console.error('Error general:', error);
   }
 }
 
-diagnoseCalendarConfig(); 
+// Ejecutar el diagnóstico
+diagnoseCalendarConfig().then(() => {
+  console.log('\nDiagnóstico completado');
+}); 
