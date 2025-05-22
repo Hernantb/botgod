@@ -63,9 +63,11 @@ async function getBusinessConfig(businessId) {
  * @returns {Promise<string>} - Respuesta generada
  */
 async function processMessageWithOpenAI(sender, message, conversationId, businessId = process.env.BUSINESS_ID) {
+    console.log(`🟢 [LOG] Mensaje recibido para procesar: sender=${sender}, message="${message}", conversationId=${conversationId}, businessId=${businessId}`);
     try {
         console.log(`🤖 Procesando mensaje de ${sender} con OpenAI: "${message.substring(0, 100)}${message.length > 100 ? '...' : ''}"`);
         console.log(`🏢 Business ID recibido: ${businessId || 'NO DEFINIDO'}`);
+        console.log(`☎️ Número de teléfono del remitente: ${sender}`);
         
         // Obtener configuración del negocio (si está disponible)
         const businessConfig = await getBusinessConfig(businessId);
@@ -155,17 +157,40 @@ async function processMessageWithOpenAI(sender, message, conversationId, busines
                     const functionArgs = JSON.parse(action.function.arguments);
                     
                     console.log(`🔧 Llamada a función: ${functionName}`, functionArgs);
-                    
+                    console.log(`🔍 businessId recibido en functionArgs:`, functionArgs.businessId);
+                    console.log(`🔍 businessId recibido en contexto:`, businessId);
+                    console.log(`🔍 Teléfono remitente disponible:`, sender);
                     try {
-                        // Añadir businessId si no está presente
-                        if (functionArgs.businessId === undefined) {
+                        // Añadir o reemplazar businessId si no está presente o es 'default'
+                        if (functionArgs.businessId === undefined || !functionArgs.businessId || functionArgs.businessId === 'default') {
                             functionArgs.businessId = businessId;
+                            console.log(`✅ businessId ${functionArgs.businessId ? 'reemplazado' : 'insertado'} automáticamente: ${businessId}`);
                         }
                         
+                        // Para funciones específicas de calendario, asegurarse de usar el businessId correcto
+                        if (['get_calendar_info', 'schedule_appointment', 'check_calendar_availability', 'create_calendar_event', 'find_customer_appointments', 'delete_calendar_event'].includes(functionName)) {
+                            // Siempre forzar el businessId correcto para funciones de calendario
+                            if (functionArgs.businessId !== businessId) {
+                                console.log(`⚠️ Reemplazando businessId de calendario (${functionArgs.businessId}) con el correcto: ${businessId}`);
+                                functionArgs.businessId = businessId;
+                            }
+                        }
+                        
+                        // Rellenar el teléfono automáticamente si es schedule_appointment
+                        if (functionName === 'schedule_appointment' && functionArgs.eventDetails) {
+                            if (!functionArgs.eventDetails.phone || functionArgs.eventDetails.phone === '') {
+                                functionArgs.eventDetails.phone = sender;
+                                console.log(`✅ Teléfono del remitente insertado automáticamente: ${sender}`);
+                            }
+                        }
+                        // Rellenar el teléfono en todos los casos para phoneNumber
+                        if (functionArgs.phoneNumber === undefined || !functionArgs.phoneNumber) {
+                            functionArgs.phoneNumber = sender;
+                            console.log(`✅ phoneNumber insertado automáticamente: ${sender}`);
+                        }
                         // Llamar a la función externa
                         const functionResult = await processFunctionCall(functionName, functionArgs);
                         console.log(`✅ Resultado de función ${functionName}:`, JSON.stringify(functionResult).substring(0, 200));
-                        
                         // Añadir el resultado a las salidas de herramientas
                         toolOutputs.push({
                             tool_call_id: action.id,
@@ -173,7 +198,6 @@ async function processMessageWithOpenAI(sender, message, conversationId, busines
                         });
                     } catch (functionError) {
                         console.error(`❌ Error ejecutando función ${functionName}:`, functionError);
-                        
                         // Enviar error como respuesta
                         toolOutputs.push({
                             tool_call_id: action.id,

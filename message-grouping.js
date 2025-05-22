@@ -138,6 +138,8 @@ async function processMessageGroup(conversationId) {
   // Procesar el mensaje combinado
   try {
     // Procesar con OpenAI y obtener respuesta
+    // Añadir el sender (número de teléfono) para que se use en inyección de teléfono en las llamadas a funciones
+    console.log(`🔧 processMessageGroup - Enviando mensaje combinado a OpenAI con sender (teléfono): ${firstMessage.sender}`);
     const botResponse = await processMessageWithOpenAI(firstMessage.sender, combinedMessage, conversationId, process.env.BUSINESS_ID);
     
     if (botResponse) {
@@ -180,6 +182,8 @@ async function processSingleMessage(messageData) {
   
   try {
     // Procesar con OpenAI y obtener respuesta
+    // Añadir el sender (número de teléfono) para que se use en inyección de teléfono en las llamadas a funciones
+    console.log(`🔧 processSingleMessage - Enviando mensaje a OpenAI con sender (teléfono): ${sender}`);
     const botResponse = await processMessageWithOpenAI(sender, message, conversationId, process.env.BUSINESS_ID);
     
     if (botResponse) {
